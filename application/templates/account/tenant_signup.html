@@ -1,0 +1,52 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+{% block head_links %}
+{% endblock %}
+
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-0">
+      <!-- <img src="{% static 'img/signup_img.png' %}"> -->
+    </div>
+    <div class="col form_box">
+      <div class="form_heading">
+        <h1 class="text-bold">Get Started</h1>
+      </div>
+      <div class="form_heading_text">
+        <!-- <p>Ready to get your hands on <br> endless pages of study content?</p> -->
+      </div>
+
+<form action="{% url 'tenant_register' %}" method="post" id="frm">
+    <fieldset id="fld">
+		{% csrf_token %} {% for field in form %}
+		<div class="form-group">
+			<input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}"
+			 aria-describedby="emailHelp" placeholder="{{field.label|title}}" name="{{ field.html_name }}">
+		</div>
+			{% if field.field.widget.input_type == 'checkbox' %}
+			{{field.label}}
+			{% endif %}
+		{{ field.errors }} {% endfor %}
+
+		{% if redirect_field_value %}
+		<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+		{% endif %}
+
+		<input type="submit" value="Create Free Account" class="btn signup_button">
+    <br>
+    
+
+		<br><br>
+        Already have an account? <a href="{% url 'account_login' %}">Login</a>
+        <br><br>
+        Are you a landlord? <a href="{% url 'landlord_signup' %}">Signup as a Landlord</a>
+    </fieldset>
+</form>
+</div>
+</div>
+{% endblock %}

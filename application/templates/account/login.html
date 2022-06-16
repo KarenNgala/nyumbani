@@ -1,0 +1,54 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+{% block head_links %}
+
+{% endblock %}
+
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-0">
+      <img src="{% static 'img/login_img.png' %}">
+    </div>
+    <div class="col form_box">
+      <div class="form_heading">
+        <h1>Log In</h1>
+      </div>
+      <div class="form_heading_text">
+        <p>Welcome back!</p>
+      </div>
+
+<form action="{% url 'account_login' %}" method="post" id="frm">
+    <fieldset id="fld">
+		{% csrf_token %} {% for field in form %}
+		<div class="form-group">
+      {% if field.field.widget.input_type != 'checkbox' %}
+			<input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}"
+			 aria-describedby="emailHelp" placeholder="{{field.label|title}}" name="{{ field.html_name }}">
+			{% else %}
+			<input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}"
+       aria-describedby="emailHelp" placeholder="{{field.label|title}}" name="{{ field.html_name }}"> {{field.label}}
+      {% endif %}
+    </div>
+    {{ field.errors }} {% endfor %}
+
+		{% if redirect_field_value %}
+		<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+		{% endif %}
+
+		<input type="submit" value="Login" class="btn btn-primary login_button"></input> 
+    <br>
+    
+		<br><br>
+		<p class="text-center"> <a class="text-danger" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> </p>
+
+    Don't have an account? <a href="{% url 'tenant_register' %}">Signup</a>
+    </fieldset>
+</form>
+</div>
+</div>
+{% endblock %}
