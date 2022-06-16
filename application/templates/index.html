@@ -2,15 +2,46 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'style.css' %}">
 
 
 <body>
-    <h2 class="text-danger">Nyumbani Hostels</h2>
-    <button type="submit" class="btn btn-primary">Submit
-      </button>
+
+  <!-- Example Code -->
+  
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static '/images/BG2.jpg' %}"  width="800" height="400" class="d-block w-100" alt="...">  
+      </div>
+      <div class="carousel-item">
+        <img src="{% static '/images/BG1.jpg' %}"  width="800" height="400" class="d-block w-100" alt="...">  
+  
+      </div>
+      <div class="carousel-item">
+        <img src="{% static '/images/Majestic Sunsets 158.jpg' %}"  width="800" height="400" class="d-block w-100" alt="...">  
+  
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
     
-</body>
+
 </html>
