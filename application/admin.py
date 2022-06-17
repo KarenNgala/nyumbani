@@ -1,4 +1,15 @@
 from django.contrib import admin
-from .models import Photo
-# Register your models here.
-admin.site.register(Photo)
+from .models import *
+
+
+admin.site.register(User)
+admin.site.register(Tenant)
+admin.site.register(Landlord)
+admin.site.register(Apartment)
+admin.site.register(ApartmentImages)
+admin.site.register(RoomType)
+admin.site.register(RoomNumber)
+admin.site.register(Amenity)
+admin.site.register(HouseRule)
+admin.site.register(Booking)
+admin.site.register(Reviews)

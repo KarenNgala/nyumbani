@@ -1,16 +1,14 @@
-
+{% extends "account/base.html" %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'style.css' %}">
+
+{% block head_links %}
+
+{% endblock %}
 
 
-<body>
-
-  <!-- Example Code -->
-  
-  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+{% block content %}
+<main>
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
@@ -38,10 +36,5 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-    
-
-</html>
+</main>
+{% endblock %}
