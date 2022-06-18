@@ -46,13 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
     'bootstrap5',
     'cloudinary',
     'cloudinary_storage',
-    'django.contrib.sites',
-    'application',
-    'allauth',
-    'allauth.account',
 ]
 
 AUTH_USER_MODEL = 'application.User'
