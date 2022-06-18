@@ -10,45 +10,64 @@
 
 
 {% block content %}
-<div class="row">
-    <div class="col-sm-0">
-      <img src="{% static 'img/login_img.png' %}">
-    </div>
-    <div class="col form_box">
-      <div class="form_heading">
-        <h1>Log In</h1>
-      </div>
-      <div class="form_heading_text">
-        <p>Welcome back!</p>
-      </div>
-
-<form action="{% url 'account_login' %}" method="post" id="frm">
-    <fieldset id="fld">
-		{% csrf_token %} {% for field in form %}
-		<div class="form-group">
-      {% if field.field.widget.input_type != 'checkbox' %}
-			<input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}"
-			 aria-describedby="emailHelp" placeholder="{{field.label|title}}" name="{{ field.html_name }}">
-			{% else %}
-			<input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}"
-       aria-describedby="emailHelp" placeholder="{{field.label|title}}" name="{{ field.html_name }}"> {{field.label}}
-      {% endif %}
-    </div>
-    {{ field.errors }} {% endfor %}
-
-		{% if redirect_field_value %}
-		<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
-		{% endif %}
-
-		<input type="submit" value="Login" class="btn btn-primary login_button"></input> 
-    <br>
+<section class="container"> 
+  <div class="row">
     
-		<br><br>
-		<p class="text-center"> <a class="text-danger" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> </p>
+    <div class="col-sm-5">
+      <img class="mt-5 me-5 " src="{% static '/images/Authentication_Two Color.png' %}" width="650
+      " alt="">
+    </div>
+    <div class="col-sm-2"></div>
+    
+    <div class="col-sm-5 px-5">
+      <div class=" container mt-5">
+        <div class="text-center">
+          <h1>Login</h1>
+          <h6 class="text-muted fs-7">Please enter your login details</h6>
+        </div>
+      <form action="{% url 'account_login' %}" method="post" id="frm">
+        <fieldset id="fld">
+          {% csrf_token %} {% for field in form %}
+          <div class="mb-2 col-xs-4">
+            {% if field.field.widget.input_type != 'checkbox' %}
+            <input type="{{ field.field.widget.input_type }}" class="form-control form-control-lg" id="{{ field.id_for_label }}"
+             aria-describedby="emailHelp" placeholder="{{field.label|title}}" name="{{ field.html_name }}">
+            {% else %}
+            <input type="{{ field.field.widget.input_type }}" id="{{ field.id_for_label }}"
+             aria-describedby="emailHelp" placeholder="{{field.label|title}}" name="{{ field.html_name }}"> {{field.label}}
+            {% endif %}
+          </div>
+          {{ field.errors }} {% endfor %}
+      
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+          {% endif %}
+          
+        <div class="mb-2 pt-2">
+          <button id="login" style="background-color: #146356;" type="submit" class="btn btn-primary form-control">Login</input>
+        </div>
+      </form>
+      <p class="text-center"> <a class="text-danger" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> </p>
 
-    Don't have an account? <a href="{% url 'tenant_register' %}">Signup</a>
-    </fieldset>
-</form>
-</div>
-</div>
+        <h6 class="text-muted text-center pt-3">Dont have an account? <a href="{% url 'tenant_register' %}"><span style="color: rgb(119, 84, 246);">Register</span></a>  </h6>
+        <h6 class=" text-muted text-center pt-2">..........or continue with..........</h6>
+        <div class="d-flex justify-content-evenly pt-3">
+          <div>
+            <a href="https://web.facebook.com/"><img src="{% static '/images/834722_facebook_icon.png' %}" width="50" alt=""></a>
+          </div>
+          <div>
+            <a href="https://twitter.com/"><img src="{% static '/images/toppng.com-twitter-logo-1252x1018.png' %}" width="50" alt="">
+            </a>
+          </div>
+          <div>
+            <a href="https://google.com/"><img src="{% static '/images/icons8-gmail-48.png' %}"width="50" alt="">
+            </a>
+          </div>    
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 {% endblock %}

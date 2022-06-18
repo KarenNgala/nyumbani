@@ -1,0 +1,16 @@
+/* styling for my login and sign up */
+.container{
+    font-family: 'Tenor Sans', sans-serif;
+    height: 100vh;
+  }
+  #login{
+    background-color: #146356;
+  }
+  
+  /* .btn{
+    background-color: rgb(79, 74, 125);
+  } */
+  /* a{
+    color:black;
+  } */
+ 

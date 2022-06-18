@@ -9,44 +9,62 @@
 
 
 {% block content %}
-<div class="row">
-    <div class="col-sm-0">
-      <!-- <img src="{% static 'img/signup_img.png' %}"> -->
-    </div>
-    <div class="col form_box">
-      <div class="form_heading">
-        <h1 class="text-bold">Get Started</h1>
-      </div>
-      <div class="form_heading_text">
-        <!-- <p>Ready to get your hands on <br> endless pages of study content?</p> -->
-      </div>
-
-<form action="{% url 'tenant_register' %}" method="post" id="frm">
-    <fieldset id="fld">
-		{% csrf_token %} {% for field in form %}
-		<div class="form-group">
-			<input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}"
-			 aria-describedby="emailHelp" placeholder="{{field.label|title}}" name="{{ field.html_name }}">
-		</div>
-			{% if field.field.widget.input_type == 'checkbox' %}
-			{{field.label}}
-			{% endif %}
-		{{ field.errors }} {% endfor %}
-
-		{% if redirect_field_value %}
-		<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
-		{% endif %}
-
-		<input type="submit" value="Create Free Account" class="btn signup_button">
-    <br>
+<section class="container"> 
+  <div class="row">
     
+    <div class="col-sm-5">
+      <img class="mt-5 me-5 " src="{% static '/images/User interface_Flatline.png' %}" width="650
+      " alt="">
+    </div>
+    <div class="col-sm-2"></div>
+    
+    <div class="col-sm-5 px-5">
+      <div class=" container mt-5">
+        <div class="text-center">
+          <h1>Sign up</h1>
+          <h6 class="text-muted fs-6">Create your account in seconds</h6>
+        </div>
+        <form  action="{% url 'tenant_register' %}" method="post" id="frm">
+          <fieldset id="fld">
+            {% csrf_token %} {% for field in form %}
+          <div class="mb-2 pt-2">
+            <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.id_for_label }}"
+              placeholder="{{field.label|title}}" name="{{ field.html_name }}">
+          </div>
+              {% if field.field.widget.input_type == 'checkbox' %}
+              {{field.label}}
+              {% endif %}
+            {{ field.errors }} {% endfor %}
+        
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+            {% endif %}
 
-		<br><br>
-        Already have an account? <a href="{% url 'account_login' %}">Login</a>
-        <br><br>
-        Are you a landlord? <a href="{% url 'landlord_signup' %}">Signup as a Landlord</a>
-    </fieldset>
-</form>
-</div>
-</div>
+          <div class="mb-2 pt-2">
+            <button type="submit" style="background-color: #146356;"  class="btn btn-primary form-control">Create an account</button>
+          </div>
+        </form>
+        <h6 class="text-muted text-center pt-3 fs-6">Already have an account? <a href="{% url 'account_login' %}"><span style="color: rgb(119, 84, 246);">Log in</span></a>  </h6>
+        <h6 class="text-muted text-center pt-3 fs-6">Are you a landlord? <a href="{% url 'landlord_signup' %}"><span style="color: rgb(119, 84, 246);">Create a landlord account</span></a>  </h6>
+        <h6 class=" text-muted text-center pt-2 fs-6">..........or continue with..........</h6>
+        <div class="d-flex justify-content-evenly pt-3">
+          <div>
+            <a href="https://web.facebook.com/"><img src="{% static '/images/834722_facebook_icon.png' %}" width="50" alt=""></a>
+          </div>
+          <div>
+            <a href="https://twitter.com/"><img src="{% static '/images/toppng.com-twitter-logo-1252x1018.png' %}" width="50" alt="">
+            </a>
+          </div>
+          <div>
+            <a href="https://google.com/"><img src="{% static '/images/icons8-gmail-48.png' %}"width="50" alt="">
+            </a>
+          </div>    
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 {% endblock %}

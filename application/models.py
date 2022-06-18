@@ -81,7 +81,7 @@ class Apartment(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='apartment_images', default='image.jpg')
     description = models.TextField(blank=True, null=True)
-    Landlord = models.ForeignKey(Landlord, on_delete=models.CASCADE)
+    landlord = models.ForeignKey(Landlord, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.name}"
@@ -97,7 +97,8 @@ class ApartmentImages(models.Model):
 
 class RoomType(models.Model):
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
-    room_type = models.CharField(max_length=255,)
+    room_type = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
         return self.room_type
@@ -112,12 +113,10 @@ class RoomNumber(models.Model):
 
 
 class Booking(models.Model):
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
-    apartment = models.OneToOneField(Apartment, on_delete=models.CASCADE)
+    tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE)
     room_number = models.OneToOneField(RoomNumber, on_delete=models.CASCADE)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
     stay_approved = models.BooleanField(verbose_name=("approved"),null=True, default=False)
 
     def __str__(self):
@@ -131,7 +130,7 @@ class Booking(models.Model):
 
 class Amenity(models.Model):
     description = models.TextField()
-    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
+    apartment = models.ManyToManyField(Apartment, related_name='apartment_amenity')
 
     def __str__(self):
         return self.description
@@ -139,7 +138,7 @@ class Amenity(models.Model):
 
 class HouseRule(models.Model):
     description = models.TextField()
-    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
+    apartment = models.ManyToManyField(Apartment, related_name='apartment_rules')
 
     def __str__(self):
         return self.description
