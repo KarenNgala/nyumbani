@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Landlord, Tenant, User
+from .models import Landlord, Tenant, User,Apartment
 from django.db import transaction
 
 

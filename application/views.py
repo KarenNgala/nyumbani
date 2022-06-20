@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView, View
 from .decorators import tenant_required, landlord_required
@@ -56,3 +57,9 @@ class LandlordSignUpView(CreateView):
         user = form.save()
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('index')
+
+def Apartment(request):
+    apartments = Apartment.objects.all().order_by('-id')
+    
+    return render(request,'listings.html' ,{'apartments':apartments})
+    

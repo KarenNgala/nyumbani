@@ -73,7 +73,7 @@ class Landlord(models.Model):
     name = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
-        return f"Dr. {self.user.username}"
+        return f"Dr. {self.user.name}"
 
         
 
@@ -87,12 +87,12 @@ class Apartment(models.Model):
         return f"{self.name}"
 
 
-class ApartmentImages(models.Model):
-    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
-    image = models.ImageField("image")
+# class ApartmentImages(models.Model):
+#     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
+#     image = models.ImageField("image")
 
-    def __str__(self):
-        return self.image.url
+    # def __str__(self):
+    #     return self.image.url
 
 
 class RoomType(models.Model):
