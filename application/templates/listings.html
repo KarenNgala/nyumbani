@@ -7,11 +7,74 @@
 
 {% block content %}
 
-  <h2 class="text-danger">Nyumbani pictures</h2>
-  <button type="submit" class="btn btn-warning">Submit</button>
+<!-- 
+<div class="container ">
 
-  {% for house in apartments%}
-    <img src= " {{house.image}}">
-  {% endfor %}
+
+
+  <div class="row">
+    <div class="col-4">
+      <div class="card">
+        {% for house in apartments%}
+
+        <img src=" {{house.image.url}}" alt="img" class="card-img-top" alt="quote">
+
+
+        <div class="card-body">
+          <h5 class="card-title text-success "> <i>{{house.name}} </i></h5>
+          <p class="card-text">
+          <p>{{house.description}}</p>
+          <p class="card-text"><small>Landlord:{{house.landlord}}</small></p>
+          <p class="card-text"><small>Created at:</small></p>
+          <p class="card-text"><small>State:</small></p>
+          <div class="text-centre">
+            <a href="#"><button type="button" class="btn btn-success float-right">Rate</button></a>
+          </div>
+         
+        </div>
+        {% endfor %}
+      </div>
+     
+    </div>
+   
+  </div>
+  
+</div> -->
+
+<div class="container">
+  <div class="row ">
+    <div class="col">
+      <div class=" text-light text-center card  my-5 py-3 w-70"
+        style="background-color: #146356;box-shadow: 4px 10px  rgb(79, 74, 125); ;">
+        <div class="card-body">
+          <h3 class="text-centre">Nyumbani listings</h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for house in apartments%}
+      <div class="col-4">
+        
+          <div data-toggle ="modal" data-target="#showPicModal{{house.id}}">
+            <img src=" {{house.image.url}}" alt="img" class="card-img-top" alt="quote">
+            <p class=" text-success float-left "><i>{{house.name}}</i></p>
+            <p class=" text-dark text-centre ">{{house.description}}</p>
+            <p class=" text-dark text-centre ">{{house.landlord}}</p>
+
+          </div>
+        
+      </div>
+
+      {% endfor %}
+
+  </div>
+
+  
+</div> <br><br>
+
+
 
 {% endblock %}

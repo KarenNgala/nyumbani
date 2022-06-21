@@ -58,8 +58,11 @@ class LandlordSignUpView(CreateView):
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('index')
 
-def Apartment(request):
+def List_apartment(request):
     apartments = Apartment.objects.all().order_by('-id')
     
     return render(request,'listings.html' ,{'apartments':apartments})
-    
+
+
+def  info(request):
+    return render(request , 'information.html')    

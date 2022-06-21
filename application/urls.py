@@ -7,7 +7,9 @@ from django.conf.urls.static import static
 
 urlpatterns=[
     re_path(r'^$', views.home, name='index'),
-    re_path(r'^listings/$', views.Apartment, name='listings'),
+    re_path(r'^listings/$', views.List_apartment, name='listings'),
+    re_path(r'^info/$', views.info, name='info'),
+    
 
     #TENANT urls
     # re_path(r'^tenant/profile/$', views.profile, name='profile'),
