@@ -42,11 +42,9 @@ def tenant_info(request, user_id):
     if request.method == 'POST' and user is not None:
         name = request.POST.get('name')
         phone_number = request.POST.get('phone_number')
-        profile_photo = request.POST.get('profile_photo')
         new_tenant = Tenant(user=user)
         new_tenant.name = name
         new_tenant.phone_number = phone_number
-        new_tenant.profile_photo = profile_photo
         new_tenant.save()
         return redirect(reverse('tenant_activate', kwargs={"user_id": user.id}))
     else:
@@ -65,7 +63,7 @@ def tenant_activate(request, user_id):
         user.save()
         return redirect('account_login')
     else:
-        return render(request, 'tenant/failed.html', {'user':user, 'form':form})
+        return render(request, 'error/failed.html', {'user':user, 'form':form})
 
 
 @tenant_required
@@ -75,11 +73,9 @@ def edit_profile_tenant(request):
     if request.method == 'POST' and user is not None:
         name = request.POST.get('name')
         phone_number = request.POST.get('phone_number')
-        profile_photo = request.POST.get('profile_photo')
         new_tenant = Tenant(user=user)
         new_tenant.name = name
         new_tenant.phone_number = phone_number
-        new_tenant.profile_photo = profile_photo
         new_tenant.save()
         return redirect('tenant_profile')
     else:
@@ -103,10 +99,73 @@ class LandlordSignUpView(CreateView):
     template_name = 'account/landlord_signup.html'
 
     def get_context_data(self, **kwargs):
-        kwargs['user_type'] = 'tenant'
+        kwargs['user_type'] = 'landlord'
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return redirect('index')
+        user.is_active = False
+        user.save()
+        return redirect(reverse('landlord_info', kwargs={"user_id": user.id}))
+
+
+def landlord_info(request, user_id):
+    user = User.objects.get(pk=user_id)        
+    if request.method == 'POST' and user is not None:
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        new_landlord = Landlord(user=user)
+        new_landlord.name = name
+        new_landlord.phone_number = phone_number
+        new_landlord.save()
+        return redirect(reverse('landlord_activate', kwargs={"user_id": user.id}))
+    else:
+        return render(request, 'landlord/profile_info.html', {'user_id':user_id})
+
+
+
+def landlord_activate(request, user_id):
+    form = Landlord()
+    try:
+        user = User.objects.get(pk=user_id)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and user.is_landlord == True:
+        user.is_active = True
+        user.save()
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('landlord_home')
+    else:
+        return render(request, 'error/failed.html', {'user':user, 'form':form})
+
+
+@landlord_required
+def landlord_home(request):
+    current_user = request.user
+    user = User.objects.get(pk=current_user.id) 
+    landlord = Landlord.objects.get(user=user)
+    return render(request, 'landlord/home.html', {'landlord':landlord})
+
+
+@landlord_required
+def edit_profile_landlord(request):
+    current_user = request.user
+    user = User.objects.get(pk=current_user.id)        
+    if request.method == 'POST' and user is not None:
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        new_landlord = Landlord(user=user)
+        new_landlord.name = name
+        new_landlord.phone_number = phone_number
+        new_landlord.save()
+        return redirect('landlord_profile')
+    else:
+        return render(request, 'landlord/profile_edit.html')
+
+
+@landlord_required
+def landlord_profile(request):
+    current_user = request.user
+    user = User.objects.get(id=current_user.id)
+    landlord = Landlord.objects.get(user=user)
+    return render(request, 'landlord/profile.html', {'landlord':landlord})

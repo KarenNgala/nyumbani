@@ -17,9 +17,15 @@
           <a class="nav-link nav_bar" href="{% url 'index' %}">Home</a>
         </li>
         {% if user.is_authenticated %}
+        {% if user.is_tenant %}
         <li class="nav-item">
           <a class="nav-link nav_bar" href="{% url 'tenant_profile' %}">My profile</a>
         </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link nav_bar" href="{% url 'landlord_profile' %}">My profile</a>
+        </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link nav_bar text-danger" href="{% url 'account_logout' %}">Logout</a>
         </li>

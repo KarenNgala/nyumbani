@@ -15,7 +15,11 @@ urlpatterns=[
     re_path(r'^tenant/edit_profile/$', views.edit_profile_tenant, name='edit_tenant_profile'),
 
     # LANDLORD uls
-    # re_path(r'^landlord/$', views.landlord, name='landlord'),
+    re_path(r'^landlord/home$', views.landlord_home, name='landlord_home'),
+    re_path(r'^landlord/information/(?P<user_id>[0-9]+)/$', views.landlord_info, name='landlord_info'),
+    re_path(r'^landlord/activate/(?P<user_id>[0-9]+)/$', views.landlord_activate, name='landlord_activate'),
+    re_path(r'^landlord/profile/$', views.landlord_profile, name='landlord_profile'),
+    re_path(r'^landlord/edit_profile/$', views.edit_profile_landlord, name='edit_landlord_profile'),
 ]
 
 if settings.DEBUG:
