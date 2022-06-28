@@ -58,22 +58,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Tenant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=255, blank=True)
-    profile_photo = models.ImageField(default='default.png', upload_to='profile_pics')
     phone_number = models.CharField(max_length=10, unique=True, blank=True)
 
     def save_tenant(self):
         self.save()
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.name}"
 
 
 class Landlord(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=255, blank=True)
+    phone_number = models.CharField(max_length=10, unique=True, blank=True)
 
     def __str__(self):
-        return f"Dr. {self.user.username}"
+        return f"Dr. {self.name}"
 
         
 

@@ -4,6 +4,14 @@
 
 
 {% block head_links %}
+<style>
+  ul.errorlist{
+    list-style-type: none;
+  }
+  ul.errorlist li{
+    color: red;
+  }
+</style>
 {% endblock %}
 
 
@@ -32,9 +40,10 @@
               placeholder="{{field.label|title}}" name="{{ field.html_name }}">
           </div>
               {% if field.field.widget.input_type == 'checkbox' %}
-              {{field.label}}
+                {{field.label}}
               {% endif %}
-            {{ field.errors }} {% endfor %}
+              {{ field.errors }} 
+            {% endfor %}
         
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">

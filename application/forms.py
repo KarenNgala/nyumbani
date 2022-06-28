@@ -1,3 +1,4 @@
+from unicodedata import name
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Landlord, Tenant, User
@@ -6,7 +7,6 @@ from django.db import transaction
 
 
 class TenantSignUpForm(UserCreationForm):
-
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ("email", "password1", "password2")
@@ -27,7 +27,6 @@ class TenantSignUpForm(UserCreationForm):
 
 
 class LandlordSignUpForm(UserCreationForm):
-
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ("email", "password1", "password2")
