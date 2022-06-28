@@ -65,7 +65,7 @@ class Tenant(models.Model):
         self.save()
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.name}"
 
 
 class Landlord(models.Model):
@@ -73,7 +73,7 @@ class Landlord(models.Model):
     name = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
-        return f"Dr. {self.user.username}"
+        return f"Dr. {self.user.name}"
 
         
 
