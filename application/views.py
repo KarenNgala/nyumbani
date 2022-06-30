@@ -1,5 +1,6 @@
 import errno
 from hashlib import new
+import re
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView, View
 from .decorators import tenant_required, landlord_required
@@ -169,3 +170,13 @@ def landlord_profile(request):
     user = User.objects.get(id=current_user.id)
     landlord = Landlord.objects.get(user=user)
     return render(request, 'landlord/profile.html', {'landlord':landlord})
+        
+
+def List_apartment(request):
+    apartments = Apartment.objects.all().order_by('-id')
+    
+    return render(request,'listings.html' ,{'apartments':apartments})
+
+
+def  info(request):
+    return render(request , 'information.html')    
