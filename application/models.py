@@ -87,12 +87,12 @@ class Apartment(models.Model):
         return f"{self.name}"
 
 
-class ApartmentImages(models.Model):
-    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
-    image = models.ImageField("image")
+# class ApartmentImages(models.Model):
+#     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
+#     image = models.ImageField("image")
 
-    def __str__(self):
-        return self.image.url
+    # def __str__(self):
+    #     return self.image.url
 
 
 class RoomType(models.Model):

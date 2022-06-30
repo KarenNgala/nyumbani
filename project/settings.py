@@ -40,6 +40,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     
     'application',
+    'mpesa',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -193,3 +194,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# MPESA_CONFIG = {
+# … ‘CONSUMER_KEY’: ‘<Your consumer key from daraja>’, ‘CONSUMER_SECRET’: ‘<Your consumer secret from daraja>’, ‘HOST_NAME’: ‘<Your hostname e.g https://myhostname>’, ‘PASS_KEY’: ‘<Your pass key from daraja>’, ‘SAFARICOM_API’: ‘https://sandbox.safaricom.co.ke’, ‘SHORT_CODE’: ‘174379’
+
+# }
