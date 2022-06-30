@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, re_path
 from application import views
 from django.urls import path, include
-from mpesa.urls import mpesa_urls
+# from mpesa.urls import mpesa_urls
 
 urlpatterns = [
     re_path('admin/', admin.site.urls),
