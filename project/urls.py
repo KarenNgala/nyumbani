@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, re_path
 from application import views
+from django.urls import path, include
+# from mpesa.urls import mpesa_urls
 
 urlpatterns = [
     re_path('admin/', admin.site.urls),
@@ -24,4 +26,6 @@ urlpatterns = [
     re_path(r'^accounts/signup/$', views.SignUpView.as_view(), name='account_signup'),
     re_path('^accounts/signup/tenant/', views.TenantSignUpView.as_view(), name='tenant_register'),
     re_path('accounts/signup/landlord/', views.LandlordSignUpView.as_view(), name='landlord_signup'),
+    
+    # path('mpesa/', include(mpesa_urls)),
 ]

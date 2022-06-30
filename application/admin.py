@@ -6,7 +6,7 @@ admin.site.register(User)
 admin.site.register(Tenant)
 admin.site.register(Landlord)
 admin.site.register(Apartment)
-admin.site.register(ApartmentImages)
+
 admin.site.register(RoomType)
 admin.site.register(RoomNumber)
 admin.site.register(Amenity)

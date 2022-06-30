@@ -1,7 +1,7 @@
 /* styling for my login and sign up */
 .container{
     font-family: 'Tenor Sans', sans-serif;
-    height: 100vh;
+    /* height: 100vh; */
   }
   #login{
     background-color: #146356;
