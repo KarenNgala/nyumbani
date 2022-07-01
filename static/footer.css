@@ -1,0 +1,11 @@
+footer {
+    background-color: #4F4A7D;
+    color: white;
+    line-height: 200%;
+}
+ul {
+    list-style-type: none;
+}
+.socials{
+    word-spacing: 20px;
+}

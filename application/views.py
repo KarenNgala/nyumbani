@@ -11,12 +11,46 @@ from .models import *
 from .forms import *
 
 
-
-
 def home(request):
+    current_user = request.user
     apartments = Apartment.objects.all().order_by('-id')
-    
-    return render(request, 'index.html',{'apartments':apartments})
+    if current_user is not None:
+        user =  User.objects.get(pk=current_user.id)
+        if user.is_tenant:
+            tenant = Tenant.objects.get(user = current_user.id)
+            return render(request, 'index.html', {'tenant':tenant, 'apartments':apartments})
+        else:
+            landlord = Landlord.objects.get(user = current_user.id)
+            return render(request, 'index.html', {'landlord':landlord, 'apartments':apartments})
+    return render(request, 'index.html' {'apartments':apartments})
+
+
+
+def  info(request):
+    current_user = request.user
+    if current_user is not None:
+        user =  User.objects.get(pk=current_user.id)
+        if user.is_tenant:
+            tenant = Tenant.objects.get(user = current_user.id)
+            return render(request, 'information.html', {'tenant':tenant})
+        else:
+            landlord = Landlord.objects.get(user = current_user.id)
+            return render(request, 'information.html', {'landlord':landlord})
+    return render(request , 'information.html')    
+
+
+def List_apartment(request):
+    apartments = Apartment.objects.all().order_by('-id')
+    current_user = request.user
+    if current_user is not None:
+        user =  User.objects.get(pk=current_user.id)
+        if user.is_tenant:
+            tenant = Tenant.objects.get(user = current_user.id)
+            return render(request, 'listings.html', {'apartments':apartments, 'tenant':tenant})
+        else:
+            landlord = Landlord.objects.get(user = current_user.id)
+            return render(request, 'listings.html', {'apartments':apartments, 'landlord':landlord})
+    return render(request,'listings.html' ,{'apartments':apartments})
 
 
 class SignUpView(TemplateView):
@@ -173,12 +207,3 @@ def landlord_profile(request):
     landlord = Landlord.objects.get(user=user)
     return render(request, 'landlord/profile.html', {'landlord':landlord})
         
-
-def List_apartment(request):
-    apartments = Apartment.objects.all().order_by('-id')
-    
-    return render(request,'listings.html' ,{'apartments':apartments})
-
-
-def  info(request):
-    return render(request , 'information.html')    
