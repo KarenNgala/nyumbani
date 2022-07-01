@@ -8,48 +8,61 @@
 
 {% block content %}
 <div class="container">
-<div class="row">
-    <div class="col col-sm-0">
-      <div class="form_heading">
-        <h1>Your Profile</h1>
-      </div>
-
-      {% if tenant %}
-      <div class="col">
-        <div class="card_heading">
-          <img src="{% static '{{tenant.profile_picture}}' %}" alt="photo">
-        </div>
-      </div>
-
-      <div class="card" style="width: 30rem; height: 6rem; border: none;">
-        <div class="card-body">
-          <h5 class="card-title">Name:</h5>
-          <p class="card-text">{{tenant.name}}</p>
-        </div>
-      </div>
-
-      <div class="card" style="width: 30rem; height: 6rem; border: none;">
-        <div class="card-body">
-          <h5 class="card-title">Phone Number:</h5>
-          <p class="card-text">{{tenant.phone_number}}</p>
-        </div>
-      </div>
-      {% endif %}
-
-      <div class="card" style="width: 30rem; border: none;">
-        <div class="card-body">
-          <h5 class="card-title">Booking History:</h5>
-          <ul class="list-group list-group-flush">
-            
-          </ul>
-          </div>
-      </div>
-      <div class="card" style="width: 30rem;height: 6rem; border: none;">
-          <div class="card-body">
-          </div>
-      </div>
+  <div class="d-flex align-items-start">
+    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">Profile</button>
+      <button class="nav-link" id="v-pills-reviews-tab" data-bs-toggle="pill" data-bs-target="#v-pills-reviews" type="button" role="tab" aria-controls="v-pills-reviews" aria-selected="false">Reviews</button>
+      <button class="nav-link" id="v-pills-history-tab" data-bs-toggle="pill" data-bs-target="#v-pills-history" type="button" role="tab" aria-controls="v-pills-history" aria-selected="false">Occupation history</button>
+      <!-- <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button> -->
     </div>
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+        <div class="row">
+          <div class="col">
+            <div class="col-sm-0">
+              <div class="form_heading" style="background-color: #146356; color: white;">
+                <h3>Your Profile</h3>
+              </div>
+        
+              {% if tenant %}
+              <div class="col text-center">
+                <div class="profile_photo">
+                  <img class="img-responsive" src="{% static 'images/froggy.jpg' %}" width="30%">
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col-3">
+                  <label >Full Names</label>
+                </div>
+                <div class="col-9">
+                  <input class="form-control" type="text" placeholder="{{tenant.name}}">
+                </div>
+              </div>
+        
+              <div class="row form-group">
+                <div class="col-3">
+                  <label >Phone Number</label>
+                </div>
+                <div class="col-9">
+                  <input class="form-control" type="text" placeholder="{{tenant.phone_number}}">
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="v-pills-reviews" role="tabpanel" aria-labelledby="v-pills-reviews-tab">...</div>
+      <div class="tab-pane fade" id="v-pills-history" role="tabpanel" aria-labelledby="v-pills-history-tab">...</div>
+      <!-- <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div> -->
+    </div>
+  </div>
 </div>
-</div>
+
+
+
+
+
 
 {% endblock %}

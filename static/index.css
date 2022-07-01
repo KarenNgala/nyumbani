@@ -1,16 +1,43 @@
-/* styling for my login and sign up */
-.container{
-    font-family: 'Tenor Sans', sans-serif;
-    /* height: 100vh; */
-  }
-  #login{
-    background-color: #146356;
-  }
-  
-  /* .btn{
-    background-color: rgb(79, 74, 125);
-  } */
-  /* a{
-    color:black;
-  } */
- 
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+
+html {
+  background: lightgrey;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+  background: whitesmoke;
+  overflow: scroll;
+  overflow-x: hidden;
+  width: auto;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16px;
+  border: 1px solid rgba(0,0,0,0.25)
+}
+
+p {
+  margin: 0 0 1.5em;
+}
+
+/* scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #146356;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: white;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #146356;
+  border-radius: 20px;
+  border: 3px solid white;
+}

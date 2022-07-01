@@ -73,7 +73,7 @@ class Landlord(models.Model):
     phone_number = models.CharField(max_length=10, unique=True, blank=True)
 
     def __str__(self):
-        return f"Dr. {self.name}"
+        return f"{self.name}"
 
         
 
