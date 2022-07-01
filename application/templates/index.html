@@ -1,34 +1,151 @@
 {% extends "base.html" %}
+  
 {% load static %}
+
+  
+
+{% block head_links %}
+{% endblock %}
 
 
 {% block content %}
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
-  </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="{% static '/images/BG2.jpg' %}"  width="800" height="400" class="d-block w-100" alt="...">  
-    </div>
-    <div class="carousel-item">
-      <img src="{% static '/images/BG1.jpg' %}"  width="800" height="400" class="d-block w-100" alt="...">  
+<style>
 
-    </div>
-    <div class="carousel-item">
-      <img src="{% static '' %}"  width="800" height="400" class="d-block w-100" alt="...">  
+    .bg-img {
+        /* The image used */
+        background-image: url("{% static 'images/BG2.jpg' %}");
+        /* Control the height of the image */
+        min-height: 460px;
+      
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+      }
+      
+      /* Add styles to the form container */
+      .form {
+        position: absolute;
+        right: 10vw;
+        margin: 20px;
+        max-width: 350px;
+        max-height: 73vh;
+        padding: 16px;
+        background-color: #146356;
+        border-radius: 5%;
+        text-align: center;
+      }
+      input{
+        border-radius: 10%;
+      }
+      
+      /* Full-width input fields */
+        input[type=text], input[type=password] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        border: none;
+        background: #f1f1f1;
+       
+      }
+      
+      input[type=text]:focus, input[type=password]:focus {
+        background-color: #ddd;
+        outline: none;
+        
+      }
+      
+      /* Set a style for the submit button */
+      .btn {
+        background-color: #4F4A7D;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        opacity: 0.9;
+      }
+      
+      .btn:hover {
+        opacity: 0;
+      }   
+</style>
+<div class="bg-img text-center">
+    <form action="" class="form text-center">
+      <p class="text-light text-center">Search and Book Today</p>
+  
+      <label for="Location"><b>Location</b></label>
+      <input type="text" placeholder="Location" name="Location" required>
+  
+      <label for="Type"><b>Hostel Type</b></label>
+      <input type="text" placeholder="type" name="type" required>
 
+      <label for="max"><b>Maximum Price</b></label>
+      <input type="text" placeholder="Maximum-price" name="psw" required>
+  
+    
+      <button type="submit" class="btn  btn-sm text-center">Search </button>
+    </form>
+  </div>
+
+  <div class="container">
+    <div class="row ">
+      <div class="col">
+        <div class=" text-light text-center card  my-4 py-1 w-40"
+          style="background-color: #146356;box-shadow: 4px 10px  rgb(79, 74, 125); ;">
+          <div class="card-body">
+            <h3 class="text-centre">July`s Most Featured Hostels</h3>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+        {% for house in apartments%}
+          <div class="col-4">
+            
+            <div data-bs-toggle="modal" data-bs-target="#PreviewPicModal">
+            
+                <img src=" {{house.image.url}}" alt="img" class="card-img-top" alt="quote"> 
+                <p class=" text-success float-left "><i>{{house.name}}</i></p>
+                <p class=" text-dark text-centre ">{{house.description}}</p>
+                <p class=" text-dark text-centre ">{{house.landlord}}</p>
+    
+              </div>
+          </div>
+            <!-- Modal -->
+  <div class="modal fade " id="PreviewPicModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{house.name}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src=" {{house.image.url}}"class = "img-responsive"alt="{{pic.name}}"height="300px" width="470px">
+            <p class="text-centre">Description:{{house.description}}</p>
+            <div class="col-md-4">
+                <p><i>Landlord:&nbsp;{{house.landlord}}</i></p>
+            </div>
+        </div>
+        <div class="modal-footer" id="modalBody">
+        <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-success btn-sm" data-dismiss="modal">Book</button>
+          
+        </div>
+      </div>
     </div>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-{% endblock %}
+          
+    
+          {% endfor %}
+    
+    </div>
+  
+    
+  </div> <br><br>
+  
+  
+  
+  {% endblock %}

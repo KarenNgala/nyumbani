@@ -14,7 +14,9 @@ from .forms import *
 
 
 def home(request):
-    return render(request, 'index.html')
+    apartments = Apartment.objects.all().order_by('-id')
+    
+    return render(request, 'index.html',{'apartments':apartments})
 
 
 class SignUpView(TemplateView):
