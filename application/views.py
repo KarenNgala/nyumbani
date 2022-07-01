@@ -22,7 +22,7 @@ def home(request):
         else:
             landlord = Landlord.objects.get(user = current_user.id)
             return render(request, 'index.html', {'landlord':landlord, 'apartments':apartments})
-    return render(request, 'index.html' {'apartments':apartments})
+    return render(request, 'index.html', {'apartments':apartments})
 
 
 
