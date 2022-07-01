@@ -13,15 +13,17 @@ from .forms import *
 
 def home(request):
     current_user = request.user
+    apartments = Apartment.objects.all().order_by('-id')
     if current_user is not None:
         user =  User.objects.get(pk=current_user.id)
         if user.is_tenant:
             tenant = Tenant.objects.get(user = current_user.id)
-            return render(request, 'index.html', {'tenant':tenant})
+            return render(request, 'index.html', {'tenant':tenant, 'apartments':apartments})
         else:
             landlord = Landlord.objects.get(user = current_user.id)
-            return render(request, 'index.html', {'landlord':landlord})
-    return render(request, 'index.html')
+            return render(request, 'index.html', {'landlord':landlord, 'apartments':apartments})
+    return render(request, 'index.html' {'apartments':apartments})
+
 
 
 def  info(request):
