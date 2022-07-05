@@ -59,7 +59,9 @@
       <div class="col-4">
         
           <div data-toggle ="modal" data-target="#showPicModal{{house.id}}">
-            <img src=" {{house.image.url}}" alt="img" class="card-img-top" alt="quote">
+            <a href="/single_listing/{{house.id}}">
+              <img src=" {{house.image.url}}" alt="img" class="card-img-top" alt="quote">
+            </a>
             <p class=" text-success float-left "><i>{{house.name}}</i></p>
             <p class=" text-dark text-centre ">{{house.description}}</p>
             <p class=" text-dark text-centre ">{{house.landlord}}</p>

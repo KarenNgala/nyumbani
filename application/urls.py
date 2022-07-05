@@ -9,6 +9,7 @@ urlpatterns=[
     re_path(r'^$', views.home, name='index'),
     re_path(r'^listings/$', views.List_apartment, name='listings'),
     re_path(r'^info/$', views.info, name='info'),
+    re_path(r'^single_listing/(?P<apart_id>[0-9]+)/$', views.listing, name='single_listing'),
     
 
     #TENANT urls

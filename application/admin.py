@@ -8,7 +8,6 @@ admin.site.register(Landlord)
 admin.site.register(Apartment)
 
 admin.site.register(RoomType)
-admin.site.register(RoomNumber)
 admin.site.register(Amenity)
 admin.site.register(HouseRule)
 admin.site.register(Booking)

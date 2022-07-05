@@ -13,15 +13,17 @@ from .forms import *
 
 def home(request):
     current_user = request.user
-    apartments = Apartment.objects.all().order_by('-id')
+    apartments = Apartment.objects.all()
     if current_user is not None:
         user =  User.objects.get(pk=current_user.id)
         if user.is_tenant:
             tenant = Tenant.objects.get(user = current_user.id)
             return render(request, 'index.html', {'tenant':tenant, 'apartments':apartments})
-        else:
+        elif user.is_landlord:
             landlord = Landlord.objects.get(user = current_user.id)
             return render(request, 'index.html', {'landlord':landlord, 'apartments':apartments})
+        else:
+            return render(request, 'index.html', {'apartments':apartments})
     return render(request, 'index.html', {'apartments':apartments})
 
 
@@ -33,9 +35,11 @@ def  info(request):
         if user.is_tenant:
             tenant = Tenant.objects.get(user = current_user.id)
             return render(request, 'information.html', {'tenant':tenant})
-        else:
+        elif user.is_landlord:
             landlord = Landlord.objects.get(user = current_user.id)
             return render(request, 'information.html', {'landlord':landlord})
+        else:
+            return render(request, 'information.html')
     return render(request , 'information.html')    
 
 
@@ -47,10 +51,17 @@ def List_apartment(request):
         if user.is_tenant:
             tenant = Tenant.objects.get(user = current_user.id)
             return render(request, 'listings.html', {'apartments':apartments, 'tenant':tenant})
-        else:
+        elif user.is_landlord:
             landlord = Landlord.objects.get(user = current_user.id)
-            return render(request, 'listings.html', {'apartments':apartments, 'landlord':landlord})
+            return render(request, 'listings.html', {'landlord':landlord, 'apartments':apartments})
+        else:
+            return render(request, 'listings.html', {'apartments':apartments})
     return render(request,'listings.html' ,{'apartments':apartments})
+
+
+def listing(request, apart_id):
+    listing = Apartment.objects.get(id=apart_id)
+    return render(request,'single_listing.html' ,{'listing':listing})
 
 
 class SignUpView(TemplateView):

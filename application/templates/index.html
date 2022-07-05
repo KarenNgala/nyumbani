@@ -5,147 +5,145 @@
   
 
 {% block head_links %}
+<style>
+.bg-img {
+  background-image: url("{% static 'images/BG2.jpg' %}");
+  min-height: 475px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.form {
+  position: absolute;
+  right: 10vw;
+  margin: 20px;
+  max-width: 441px;
+  padding: 40px 40px 24px;
+  background-color: #fff;
+  border-radius: 4%;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .12);
+}
+
+.seach-text{
+  color: #000;
+  font-weight: 800;
+}
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 20px 0;
+  border: none;
+  background: #f1f1f1;
+ 
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+  
+}
+
+.btn {
+  background-color: #4F4A7D;
+  color: white;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  box-shadow: inset;
+}   
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+} 
+.card_caption {
+    text-transform: capitalize;
+    background: #fff;
+    height: 150px;
+    padding: 15px 5px;
+    margin-right: auto;
+}
+</style>
 {% endblock %}
 
 
 {% block content %}
-<style>
-
-    .bg-img {
-        /* The image used */
-        background-image: url("{% static 'images/BG2.jpg' %}");
-        /* Control the height of the image */
-        min-height: 460px;
-      
-        /* Center and scale the image nicely */
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        position: relative;
-      }
-      
-      /* Add styles to the form container */
-      .form {
-        position: absolute;
-        right: 10vw;
-        margin: 20px;
-        max-width: 350px;
-        max-height: 73vh;
-        padding: 16px;
-        background-color: #146356;
-        border-radius: 5%;
-        text-align: center;
-      }
-      input{
-        border-radius: 10%;
-      }
-      
-      /* Full-width input fields */
-        input[type=text], input[type=password] {
-        width: 100%;
-        padding: 15px;
-        margin: 5px 0 22px 0;
-        border: none;
-        background: #f1f1f1;
-       
-      }
-      
-      input[type=text]:focus, input[type=password]:focus {
-        background-color: #ddd;
-        outline: none;
-        
-      }
-      
-      /* Set a style for the submit button */
-      .btn {
-        background-color: #4F4A7D;
-        color: white;
-        padding: 16px 20px;
-        border: none;
-        cursor: pointer;
-        opacity: 0.9;
-      }
-      
-      .btn:hover {
-        opacity: 0;
-      }   
-</style>
-<div class="bg-img text-center">
-    <form action="" class="form text-center">
-      <p class="text-light text-center">Search and Book Today</p>
+<div class="bg-img">
+    <form action="" class="form">
+      <h2 class="search-text text-center">Search and Book Today</h2>
   
       <label for="Location"><b>Location</b></label>
-      <input type="text" placeholder="Location" name="Location" required>
+      <input type="text" placeholder="Where do you want to live?" name="Location" required>
   
       <label for="Type"><b>Hostel Type</b></label>
-      <input type="text" placeholder="type" name="type" required>
+      <input type="text" placeholder="Hostel Type" name="type" required>
 
       <label for="max"><b>Maximum Price</b></label>
-      <input type="text" placeholder="Maximum-price" name="psw" required>
+      <input type="text" placeholder="Ksh" name="price" required>
   
-    
-      <button type="submit" class="btn  btn-sm text-center">Search </button>
+      <div class="text-center">
+        <button type="submit" class="btn search-btn text-center">Search</button>
+      </div>
     </form>
   </div>
 
   <div class="container">
-    <div class="row ">
-      <div class="col">
-        <div class=" text-light text-center card  my-4 py-1 w-40"
-          style="background-color: #146356;box-shadow: 4px 10px  rgb(79, 74, 125); ;">
-          <div class="card-body">
-            <h3 class="text-centre">July`s Most Featured Hostels</h3>
-          </div>
-  
-        </div>
-      </div>
-    </div>
-  
-    <div class="row">
-        {% for house in apartments%}
-          <div class="col-4">
-            
-            <div data-bs-toggle="modal" data-bs-target="#PreviewPicModal">
-            
-                <img src=" {{house.image.url}}" alt="img" class="card-img-top" alt="quote"> 
-                <p class=" text-success float-left "><i>{{house.name}}</i></p>
-                <p class=" text-dark text-centre ">{{house.description}}</p>
-                <p class=" text-dark text-centre ">{{house.landlord}}</p>
-    
-              </div>
-          </div>
-            <!-- Modal -->
-  <div class="modal fade " id="PreviewPicModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog ">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">{{house.name}}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <img src=" {{house.image.url}}"class = "img-responsive"alt="{{pic.name}}"height="300px" width="470px">
-            <p class="text-centre">Description:{{house.description}}</p>
-            <div class="col-md-4">
-                <p><i>Landlord:&nbsp;{{house.landlord}}</i></p>
+    <div class="row hidden-md-up mt-3">
+        {% for listing in apartments %}
+        <div class="col-md-4">
+            <div class="card border-light">
+                <div class="card-image">
+                    <a href="/single_listing/{{listing.id}}">
+                      <img src="{{listing.image.url}}" class="card-img-top" alt="">
+                    </a>
+                </div>
+                <div class="card_content">
+                  <div class="card_caption">
+                    <div class="row">
+                      <div class="col">
+                        <h6>{{listing.room_type}}</h6>
+                      </div>
+                      <div class="col text-end">
+                        <h6 class="text-success">rooms available</h6>
+                      </div>
+                    </div>
+                    <h4>
+                      <a href="/single_listing/{{listing.id}}">{{listing.name}}</a>
+                    </h4>
+                    <!-- <h6>Ruiru</h6> -->
+                  </div>
+                </div>
             </div>
         </div>
-        <div class="modal-footer" id="modalBody">
-        <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-outline-success btn-sm" data-dismiss="modal">Book</button>
-          
-        </div>
-      </div>
+        {% endfor %}
     </div>
   </div>
-          
-    
-          {% endfor %}
-    
-    </div>
-  
-    
-  </div> <br><br>
-  
-  
-  
+
+  {% endblock %}
+
+  {% block scripts %}
+  <script>
+    window.onload = function() {
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
+    var date = new Date();
+
+    document.getElementById('month').innerHTML = months[date.getMonth()];
+  };
+  </script>
   {% endblock %}

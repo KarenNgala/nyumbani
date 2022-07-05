@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserM
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from datetime import datetime, timedelta
 
 
 class UserManager(BaseUserManager):
@@ -75,13 +76,38 @@ class Landlord(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-        
+  
+class Amenity(models.Model):
+    description = models.TextField()
+    
+    def __str__(self):
+        return self.description
+
+
+class HouseRule(models.Model):
+    description = models.TextField()
+
+    def __str__(self):
+        return self.description
+      
+
+class RoomType(models.Model):
+    room_type = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.room_type
+
 
 class Apartment(models.Model):
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='apartment_images', default='image.jpg')
+    image = models.ImageField(upload_to='apartment_images')
     description = models.TextField(blank=True, null=True)
     landlord = models.ForeignKey(Landlord, on_delete=models.CASCADE)
+    amenity = models.ManyToManyField(Amenity, related_name='apartment_amenity')
+    house_rule = models.ManyToManyField(HouseRule, related_name='apartment_rule')
+    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    number_of_rooms = models.CharField(max_length=255)
 
     def __str__(self):
         return f"{self.name}"
@@ -89,59 +115,21 @@ class Apartment(models.Model):
 
 class ApartmentImages(models.Model):
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
-    image = models.ImageField("image")
+    image = models.ImageField(upload_to='apartment_images')
 
     def __str__(self):
         return self.image.url
 
 
-class RoomType(models.Model):
-    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
-    room_type = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-
-    def __str__(self):
-        return self.room_type
-
-
-class RoomNumber(models.Model):
-    room_type = models.ForeignKey(Apartment, on_delete=models.CASCADE)
-    room_number = models.CharField(max_length=255,)
-
-    def __str__(self):
-        return self.room_number
-
-
 class Booking(models.Model):
     tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE)
-    room_number = models.OneToOneField(RoomNumber, on_delete=models.CASCADE)
+    apartment = models.OneToOneField(Apartment, on_delete=models.CASCADE)
     start_date = models.DateField(auto_now_add=True)
-    end_date = models.DateField()
-    stay_approved = models.BooleanField(verbose_name=("approved"),null=True, default=False)
+    end_date = models.DateField(default=datetime.now()+timedelta(days=30))
+    is_approved = models.BooleanField(verbose_name=("approved"),null=True, default=False)
 
-    def __str__(self):
-        if self.apartment:
-            obj = self.apartment
-        else:
-            obj = self.room_number
-            
-        return f'{obj} {self.price}'
-
-
-class Amenity(models.Model):
-    description = models.TextField()
-    apartment = models.ManyToManyField(Apartment, related_name='apartment_amenity')
-
-    def __str__(self):
-        return self.description
-
-
-class HouseRule(models.Model):
-    description = models.TextField()
-    apartment = models.ManyToManyField(Apartment, related_name='apartment_rules')
-
-    def __str__(self):
-        return self.description
+    def __str__(self):            
+        return f'{self.apartment - self.tenant.name}'
 
 
 class Reviews(models.Model):
@@ -151,4 +139,4 @@ class Reviews(models.Model):
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'REview by {self.sender}'
+        return f'Review by {self.sender}'

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_links %}
+<style>
+    .apart_image{
+        max-width:100%;
+        max-height:100%;
+        object-fit: cover !important;
+    }
+    .price{
+        width: max-content;
+        padding: 10px 10px 10px 10px;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, .12);
+        background-color: #FF9900;
+        color: black;
+        font-weight: 700;
+    }
+    .heading{
+        font-family: 'Hind Siliguri';
+        font-weight: 700;
+        font-size: 30px !important;
+        line-height: 16px;
+        color: #146356;
+        letter-spacing: 0.4px;
+    }
+    .book{
+        background: #146356;
+        color: white;
+        width: 70%;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    {% if listing %}
+    <div class="row">
+        <div class="col-md-6">
+            <img class="apart_image" src="{{listing.image.url}}" alt="">
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+            <h4 class="heading" style="color:#4F4A7D" >{{listing.name}}</h4>
+            <br>
+            <div   class="col-sm-12 book_panel"><!---->
+                <h2>About The Hostel:</h2>
+                <p>{{listing.description}}</p>
+                <p><span class="hostel_detail">Landlord:</span> {{listing.landlord}} </p><!---->
+                <p class="price"><span class="hostel_detail"><i class="bi bi-tag-fill text-center"></i>Price:</span>{{listing.price}} </p>
+                <button type="submit" class=" book btn search-btn text-center ">BOOK NOW</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col">
+                    <hr class="p-1">
+                    <h4 class="heading">REVIEWS</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col">
+                    <hr class="p-1">
+                    <h4 class="heading">AMENITIES</h4>
+                </div>
+                {% for amenity in listing.amenity.all %}
+                <p><i class="bi bi-check2-circle"></i> {{amenity.description}}</p>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col">
+                    <hr class="p-1">
+                    <h4 class="heading">HOUSE RULES</h4>
+                </div>
+                {% for rule in listing.house_rule.all %}
+                <p><i class="bi bi-check-circle"></i> {{rule.description}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+        
+    {% endif %}
+</div>
+
+{% endblock %}

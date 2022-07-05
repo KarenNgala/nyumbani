@@ -1,14 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
 
 html {
-  background: lightgrey;
   height: 100%;
   overflow: hidden;
 }
 
 body {
   height: 100%;
-  background: whitesmoke;
   overflow: scroll;
   overflow-x: hidden;
   width: auto;
@@ -17,13 +15,13 @@ body {
   border: 1px solid rgba(0,0,0,0.25)
 }
 
-p {
-  margin: 0 0 1.5em;
+a{
+  text-decoration: none;
+  color: #000;
 }
 
 /* scrollbar */
 * {
-  scrollbar-width: thin;
   scrollbar-color: #146356;
 }
 
