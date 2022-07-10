@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
@@ -88,14 +89,15 @@ class HouseRule(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return self.description
-      
+        return self.description      
+
 
 class RoomType(models.Model):
-    room_type = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     
     def __str__(self):
-        return self.room_type
+        return self.name
 
 
 class Apartment(models.Model):
@@ -105,12 +107,19 @@ class Apartment(models.Model):
     landlord = models.ForeignKey(Landlord, on_delete=models.CASCADE)
     amenity = models.ManyToManyField(Amenity, related_name='apartment_amenity')
     house_rule = models.ManyToManyField(HouseRule, related_name='apartment_rule')
-    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    number_of_rooms = models.CharField(max_length=255)
+    room_type = models.ManyToManyField(RoomType, related_name='apartment_rule')
 
     def __str__(self):
         return f"{self.name}"
+
+
+class Room(models.Model):
+    name = models.CharField(max_length=255)
+    is_occupied = models.BooleanField(verbose_name=("occupied_status"),null=True, default=False)
+    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.name
 
 
 class ApartmentImages(models.Model):
@@ -122,14 +131,14 @@ class ApartmentImages(models.Model):
 
 
 class Booking(models.Model):
-    tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE)
-    apartment = models.OneToOneField(Apartment, on_delete=models.CASCADE)
-    start_date = models.DateField(auto_now_add=True)
-    end_date = models.DateField(default=datetime.now()+timedelta(days=30))
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
+    start_date = models.DateTimeField(auto_now_add=True)
+    end_date = models.DateTimeField(default=datetime.now()+timedelta(days=30))
     is_approved = models.BooleanField(verbose_name=("approved"),null=True, default=False)
 
     def __str__(self):            
-        return f'{self.apartment - self.tenant.name}'
+        return f'{self.tenant.name} - {self.room.name}'
 
 
 class Reviews(models.Model):

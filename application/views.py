@@ -7,6 +7,8 @@ from .decorators import tenant_required, landlord_required
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
+from datetime import datetime, timedelta
+from django.utils import timezone
 from .models import *
 from .forms import *
 
@@ -187,12 +189,44 @@ def landlord_activate(request, user_id):
         return render(request, 'error/failed.html', {'user':user, 'form':form})
 
 
-@landlord_required
+def landlord_listings(request):
+    current_user = request.user
+    user = User.objects.get(pk=current_user.id) 
+    landlord = Landlord.objects.get(user=user)
+    apartments = Apartment.objects.filter(landlord=landlord).all()
+    context={
+        'landlord':landlord, 
+        'apartments':apartments,
+    }
+    return render(request, 'landlord/my_listings.html', context)
+
+
 def landlord_home(request):
     current_user = request.user
     user = User.objects.get(pk=current_user.id) 
     landlord = Landlord.objects.get(user=user)
-    return render(request, 'landlord/home.html', {'landlord':landlord})
+    my_apartments = Apartment.objects.filter(landlord=landlord).all()
+    apartments = Apartment.objects.filter(landlord=landlord).count()
+    bookings = Booking.objects.all()
+    tenants=0
+    income=0
+    for listing in my_apartments:
+        for booking in bookings:
+            if booking.room.apartment == listing:
+                tenants = tenants+1
+    for booking in bookings:
+        if booking.room.apartment in my_apartments and ((timezone.now() - booking.start_date) < timedelta(days=30)):
+            for info in booking.room.apartment.room_type.all():
+                income=income+info.price
+    
+    context={
+        'tenants':tenants,
+        'bookings': bookings,
+        'landlord':landlord, 
+        'apartments':apartments,
+        'income':income,
+    }
+    return render(request, 'landlord/home.html', context)
 
 
 @landlord_required

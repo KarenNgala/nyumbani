@@ -15,18 +15,35 @@
 
     <link rel="stylesheet" href="{% static 'index.css' %}">
     <link rel="stylesheet" href="{% static 'footer.css' %}">
-    <link rel="icon" href="{% static '/images/nyumbani logo.png' %}">
 {% block head_links %}
 {% endblock %}
 </head>
 
 <body>
-  {% include 'navbar.html' %}
+  <div class="">
+    <!-- Top nav -->
+    {% include 'navbar.html' %}
 
-<br>
-  {% block content%} 
-  {% endblock %}
-<br>
+    <!-- Side nav -->
+
+    <aside class="wrapper">
+        <div class="sidebar">
+          <h4>Dashboard</h4>
+          <ul>
+            <li><a href="{% url 'landlord_home' %}"><i class="bi bi-graph-up-arrow"></i> Stats</a></li>
+            <li><a href="{% url 'landlord_profile' %}"><i class="bi bi-person-circle"></i> Profile</a></li>
+            <li><a href="{% url 'landlord_listings' %}"><i class="bi bi-house"></i> My Listings</a></li>
+            <li><a href="#"><i class="bi bi-plus-circle"></i> Add New</a></li>
+            <li><a href="#"><i class="bi bi-people"></i> Tenants</a></li>
+            <li><a href="#"><i class="bi bi-book"></i> Pending Bookings</a></li>
+            <li><a href="#"><i class="fas fa-map-pin"></i> Map</a></li>
+          </ul> 
+        </div>
+        {% block content%} 
+
+        {% endblock %}
+      </div>
+  </aside>
 
   {% include 'footer.html' %}
 

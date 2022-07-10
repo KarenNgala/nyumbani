@@ -11,6 +11,12 @@
 {% block content %}
 <section class="container"> 
   <div class="row">
+    <div class="col-sm-5">
+      <img class="mt-5 me-5 " src="{% static '/images/User interface_Flatline (1).png' %}" width="650
+      " alt="">
+    </div>
+
+    <div class="col-sm-2"></div>
     
     <div class="col-sm-5 px-5">
       <div class=" container mt-5">
@@ -38,8 +44,8 @@
             <button type="submit" style="background-color: #146356;"  class="btn btn-primary form-control">Create an account</button>
           </div>
         </form>
-        <h6 class="text-muted text-center pt-3 fs-6">Already have an account? <a href="{% url 'account_login' %}"><span style="color: rgb(119, 84, 246);">Log in</span></a>  </h6>
-        <h6 class="text-muted text-center pt-3 fs-6">Are you a tenant? <a href="{% url 'tenant_register' %}"><span style="color: rgb(119, 84, 246);">Create a tenant account</span></a>  </h6>
+        <h6 class="text-muted text-center pt-3 fs-6">Already have an account? <a href="{% url 'account_login' %}"><b style="color: rgb(119, 84, 246);">Log in</b></a>  </h6>
+        <h6 class="text-muted text-center pt-3 fs-6">Are you a tenant? <a href="{% url 'tenant_register' %}"><b style="color: rgb(119, 84, 246);">Create a tenant account</b></a>  </h6>
         <h6 class=" text-muted text-center pt-2 fs-6">..........or continue with..........</h6>
         <div class="d-flex justify-content-evenly pt-3">
           <div>
@@ -57,16 +63,6 @@
         </div>
       </div>
     </div>
-
-    <div class="col-sm-1"></div>
-
-    <div class="col-sm-5">
-      <img class="mt-5 me-5 " src="{% static '/images/User interface_Flatline.png' %}" width="650
-      " alt="">
-    </div>
-    
-    <div class="col-sm-1"></div>
-
   </div>
 </section>
 
