@@ -6,6 +6,7 @@ from django.views.generic import TemplateView, CreateView, View
 from .decorators import tenant_required, landlord_required
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from datetime import datetime, timedelta
 from django.utils import timezone
@@ -199,6 +200,28 @@ def landlord_listings(request):
         'apartments':apartments,
     }
     return render(request, 'landlord/my_listings.html', context)
+
+
+def new_listing(request):
+    current_user = request.user
+    user = User.objects.get(pk=current_user.id) 
+    landlord = Landlord.objects.get(user=user)
+    if request.method == 'POST':
+        form = NewApartment(request.POST, request.FILES)
+        if form.is_valid():
+            upload = form.save(commit=False)
+            upload.landlord = landlord
+            upload.save()
+            return redirect('landlord_listings')
+        else:
+            return redirect('new_listing')
+    else:
+        form = NewApartment()
+        context = {
+        'landlord':landlord, 
+        'form':form
+        }
+        return render(request, 'landlord/new_listing.html', context)   
 
 
 def landlord_home(request):

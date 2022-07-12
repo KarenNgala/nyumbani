@@ -109,6 +109,9 @@ class Apartment(models.Model):
     house_rule = models.ManyToManyField(HouseRule, related_name='apartment_rule')
     room_type = models.ManyToManyField(RoomType, related_name='apartment_rule')
 
+    def save_apartment(self):
+        self.save()
+
     def __str__(self):
         return f"{self.name}"
 

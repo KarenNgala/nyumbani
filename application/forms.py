@@ -1,9 +1,7 @@
-from unicodedata import name
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from .models import Landlord, Tenant, User,Apartment
 from django.db import transaction
-
+from django.contrib.auth.forms import UserCreationForm
+from .models import *
 
 
 class TenantSignUpForm(UserCreationForm):
@@ -43,3 +41,22 @@ class LandlordSignUpForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class NewApartment(forms.ModelForm):
+    name =  forms.CharField()
+    image =  forms.ImageField()
+    description =  forms.CharField()
+    room_type = forms.ModelChoiceField(required=False,queryset=RoomType.objects, widget=forms.Select)
+    amenity = forms.ModelMultipleChoiceField(queryset=Amenity.objects.all(),widget=forms.CheckboxSelectMultiple)
+    house_rules = forms.ModelMultipleChoiceField(queryset=HouseRule.objects.all(),widget=forms.CheckboxSelectMultiple)
+
+    class Meta:
+        model = Apartment
+        fields = ["name", "description", "room_type", "image" ,"amenity", "house_rules"]
+
+    def __init__(self, *args, **kwargs):
+        super(NewApartment, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            if visible.field.widget.input_type != 'checkbox':
+                visible.field.widget.attrs['class'] = 'form-control'
