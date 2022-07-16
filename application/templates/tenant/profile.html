@@ -34,15 +34,19 @@
         <p>Name: {{tenant.name}}</p>
         <p><span class="hostel_detail">Phone number:</span> {{tenant.phone_number}} </p><!---->
         {% for booking in current_booking %}
-          {% if booking.is_approved == True %}
+          {% if booking.room.status == 'Paid' %}
             <p class="price">
             <span class="hostel_detail"><i class="bi bi-house text-center">Current Room:</i></span> <br>
             {{booking.room.apartment.name}} - Room {{booking.room.name}} <br>
             </p>
-          {% else %}
+          {% elif booking.room.status == 'Pending' %}
             <p class="price">
-            Your booking is pending approval
+            Your booking <span>({{booking.room.apartment.name}} - {{booking.room.name}})</span> is pending payment
             </p>
+          {% else %}
+          <p class="price">
+            You have no bookings yet
+          </p>
           {% endif %}
         {% endfor %}
         <a class="text-primary" href="{% url 'listings' %}">Find a new apartment?</a>
@@ -54,9 +58,9 @@
       <div class="col-sm-12 book_panel"><!---->
         <h2>Tenancy History:</h2>
         {% for booking in my_bookings %}
-        {% if booking.is_approved == True %}
-        <i>{{booking.start_date|naturalday}}:</i>
-        <p>{{booking.room.apartment.name}} - {{booking.room.name}}</p>
+        {% if booking.room.status == 'Paid' %}
+          <i>{{booking.start_date|naturalday}}:</i>
+          <p>{{booking.room.apartment.name}} - {{booking.room.name}}</p>
         {% else %}
         <p>Book rooms to see your occupancy history</p>
         {% endif %}

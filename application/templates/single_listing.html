@@ -66,61 +66,16 @@
                 <p><span class="hostel_detail">Landlord:</span> {{listing.landlord.name}} </p>
                 <p><span class="hostel_detail">Contact:</span> {{listing.landlord.phone_number}} </p>
                 <p class="price">
-                    {% for room_type in listing.room_type.all %}
+                    {% for item in room_types %}
                     <span class="hostel_detail"><i class="bi bi-tag-fill text-center"></i></span>
-                    {{room_type.name}}: {{room_type.price|intcomma}}
+                    {{item.name}}: {{item.price|intcomma}} <br>
                     {% endfor %}
                 </p>
                 <p>Available rooms: {{rooms}}</p>
-                <button type="button" class="book btn search-btn text-center" data-bs-toggle="modal" data-bs-target="#exampleModal">BOOK NOW</button>
+                <div type="button" class="book btn search-btn text-center"> <a href="/book_room/{{listing.id}}/">BOOK NOW</a></div>
             </div>
         </div>
     </div>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel" style="color:#4F4A7D; margin-left: 30%;">BOOK A ROOM</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Please ensure the details below are accurate before you make any payments.</p>
-          {% if listing %}
-          <h5>Apartment name: <span style="color: #146356;" class="text-bold">{{listing.name}}</span></h5>
-          {% endif %}
-          <form method="POST" action="/single_listing/{{listing.id}}/" class="form-group font-weight-bold" enctype="multipart/form-data">
-            {% csrf_token %} 
-            {% for field in form %}
-            {% if form.non_field_errors %}
-              <div class="form-group text-error">
-                  {{ form.non_field_errors }}
-              </div>
-            {% endif %}
-            <label for="{{ field.auto_id }}"{% if field.field.required %}
-              class="requiredField{% if field.widget.attrs.readonly %} readOnlyLabel{% endif %}"
-              {% else %}{% if field.widget.attrs.readonly %}class="readOnlyLabel"{% endif %}{% endif %}>
-              {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
-            </label>
-            {{field}}
-            {% if field.help_text %}
-            <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %}
-            {{field.errors}} {{form.errors}} {% endfor %}              
-            <div class="mb-2 pt-2">
-              <button id="login" style="background-color: #146356;" type="submit" class="btn btn-primary form-control">Request Room</input>
-            </div>
-        </form>
-        </div>
-        <div class="modal-footer" style="border-top: none;">
-          <div type="button" class="btn close float-left" data-bs-dismiss="modal" style="left:0">Close</div>
-          <button type="button" class="btn mpesa">LIPA NA MPESA</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
     <div class="row">
         <div class="col-md-6">

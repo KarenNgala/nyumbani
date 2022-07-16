@@ -17,6 +17,7 @@ urlpatterns=[
     re_path(r'^tenant/activate/(?P<user_id>[0-9]+)/$', views.tenant_activate, name='tenant_activate'),
     re_path(r'^tenant/profile/$', views.tenant_profile, name='tenant_profile'),
     re_path(r'^tenant/edit_profile/$', views.edit_profile_tenant, name='edit_tenant_profile'),
+    re_path(r'^book_room/(?P<apart_id>[0-9]+)/$', views.book_room, name='book_room'),
 
 
     # LANDLORD uls

@@ -18,7 +18,7 @@ from .forms import *
 def home(request):
     current_user = request.user
     apartments = Apartment.objects.all()
-    rooms = Room.objects.filter(is_occupied=False).all()
+    rooms = Room.objects.filter(status='Available').all()
     if current_user is not None:
         user =  User.objects.get(pk=current_user.id)
         if user.is_tenant:
@@ -67,27 +67,22 @@ def List_apartment(request):
 def listing(request, apart_id):
     listing = Apartment.objects.get(id=apart_id)
     current_user = request.user
-    rooms = Room.objects.filter(is_occupied=False, apartment=listing).count()
+    rooms = Room.objects.filter(status='Available', apartment=listing).count()
+    available_rooms = Room.objects.filter(status='Available', apartment=listing).all()
+    room_types = set()
+    for room in available_rooms:
+        room_types.add(room.room_type)
     if current_user is not None:
         user =  User.objects.get(pk=current_user.id)
         if user.is_tenant:
             tenant = Tenant.objects.get(user = current_user.id)
-            if request.method == 'POST':
-                form = NewBooking(request.POST)
-                if form.is_valid():
-                    upload = form.save(commit=False)
-                    upload.tenant = tenant
-                    form.save()
-                    return redirect('tenant_profile')
-            else:
-                form = NewBooking()
-            return render(request, 'single_listing.html', {'listing':listing, 'tenant':tenant, 'rooms':rooms,})
+            return render(request, 'single_listing.html', {'listing':listing, 'tenant':tenant, 'rooms':rooms, 'room_types':room_types})
         elif user.is_landlord:
             landlord = Landlord.objects.get(user = current_user.id)
-            return render(request, 'single_listing.html', {'landlord':landlord, 'listing':listing, 'rooms':rooms,})
+            return render(request, 'single_listing.html', {'landlord':landlord, 'listing':listing, 'rooms':rooms, 'room_types':room_types})
         else:
-            return render(request, 'single_listing.html', {'listing':listing, 'rooms':rooms,})
-    return render(request,'single_listing.html' ,{'listing':listing, 'rooms':rooms,})
+            return render(request, 'single_listing.html', {'listing':listing, 'rooms':rooms, 'room_types':room_types})
+    return render(request,'single_listing.html' ,{'listing':listing, 'rooms':rooms, 'room_types':room_types})
 
 
 class SignUpView(TemplateView):
@@ -174,6 +169,32 @@ def tenant_profile(request):
     return render(request, 'tenant/profile.html', context)
 
 
+@tenant_required
+def book_room(request, apart_id):
+    current_user = request.user
+    user = User.objects.get(id=current_user.id)
+    tenant = Tenant.objects.get(user=user)
+    listing = Apartment.objects.get(pk=apart_id)
+    available_rooms = Room.objects.filter(apartment=listing, status='Available').all()
+
+    print(available_rooms)
+    context = {
+        'tenant':tenant,
+        'listing':listing,
+        'available_rooms': available_rooms,
+    }
+
+    if request.method == 'POST':
+        room = request.POST.get('room')
+        this_room = Room.objects.get(pk=room)
+        this_room.status = 'Pending'
+        this_room.save()
+        upload = Booking(room=this_room)
+        upload.tenant = tenant
+        upload.save()
+        return redirect('tenant_profile')
+    else:
+        return render(request, 'tenant/book_room.html', context)
 
 
 #LANDLORD views
@@ -307,7 +328,7 @@ def landlord_home(request):
     my_apartments = Apartment.objects.filter(landlord=landlord).all()
     apartments = Apartment.objects.filter(landlord=landlord).count()
     bookings = Booking.objects.all()
-    rooms = Room.objects.filter(is_occupied=False).count()
+    rooms = Room.objects.filter(status='Available').count()
     tenants=0
     income=0
     for listing in my_apartments:

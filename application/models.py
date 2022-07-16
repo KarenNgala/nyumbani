@@ -107,8 +107,7 @@ class Apartment(models.Model):
     landlord = models.ForeignKey(Landlord, on_delete=models.CASCADE)
     amenity = models.ManyToManyField(Amenity, related_name='apartment_amenity')
     house_rule = models.ManyToManyField(HouseRule, related_name='apartment_rule')
-    room_type = models.ManyToManyField(RoomType, related_name='apartment_rule')
-
+    
     def save_apartment(self):
         self.save()
 
@@ -117,9 +116,15 @@ class Apartment(models.Model):
 
 
 class Room(models.Model):
+    Status_options = (
+        ('Available', 'Available'),
+        ('Pending', 'Pending'), # booked, not paid
+        ('Paid', 'Paid'),
+    )
     name = models.CharField(max_length=255)
-    is_occupied = models.BooleanField(verbose_name=("occupied_status"),null=True, default=False)
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
+    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
+    status = models.CharField(max_length=255, choices=Status_options, default='Available')
     
     def __str__(self):
         return self.name
@@ -138,7 +143,6 @@ class Booking(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(default=datetime.now()+timedelta(days=30))
-    is_approved = models.BooleanField(verbose_name=("approved"),null=True, default=False)
 
     def __str__(self):            
         return f'{self.tenant.name} - {self.room.name}'

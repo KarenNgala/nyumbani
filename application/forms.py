@@ -80,17 +80,3 @@ class ManageRooms(forms.ModelForm):
         for visible in self.visible_fields():
             if visible.field.widget.input_type != 'radio':
                 visible.field.widget.attrs['class'] = 'form-control'
-
-
-class NewBooking(forms.ModelForm):
-    room = forms.ModelChoiceField(required=False,queryset=Room.objects, empty_label=None, label="Select a room")
-
-    class Meta:
-        model = Booking
-        fields = ["room"]
-
-    def __init__(self, *args, **kwargs):
-        super(NewBooking, self).__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            if visible.field.widget.input_type != 'checkbox':
-                visible.field.widget.attrs['class'] = 'form-control'
