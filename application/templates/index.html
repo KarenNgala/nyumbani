@@ -75,7 +75,6 @@ input[type=text]:focus, input[type=password]:focus {
 .card_caption {
     text-transform: capitalize;
     background: #fff;
-    height: 150px;
     padding: 15px 5px;
     margin-right: auto;
 }
@@ -105,6 +104,7 @@ input[type=text]:focus, input[type=password]:focus {
 
   <div class="container">
     <div class="row hidden-md-up mt-3">
+      <h3><span id="month"></span>'s Featured Apartments</h3>
         {% for listing in apartments %}
         <div class="col-md-4">
           <div class="card border-light">
@@ -125,14 +125,15 @@ input[type=text]:focus, input[type=password]:focus {
                       {% endfor %}
                     </div>
                     <div class="col text-end">
-                      <h6 class="text-success">rooms available</h6>
+                        <h6 class="text-success">rooms available</h6>
+                        <!-- <h6>No rooms available</h6> -->
                     </div>
                   </div>
                 </div>
               </div>
           </div>
       </div>
-        {% endfor %}
+      {% endfor %}
     </div>
   </div>
 

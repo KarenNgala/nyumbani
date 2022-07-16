@@ -16,7 +16,7 @@
         {% if user.is_authenticated %}
         {% if user.is_tenant %}
         <li class="nav-item active">
-          <a class="nav-link nav_bar" href="/">Listings</a>
+          <a class="nav-link nav_bar" href="{% url 'listings' %}">Listings</a>
         </li>
         <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
           <ul class="navbar-nav">

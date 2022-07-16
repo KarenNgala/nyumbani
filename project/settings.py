@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     'cloudinary',
     'cloudinary_storage',
+    'django.contrib.humanize',
 ]
 
 AUTH_USER_MODEL = 'application.User'

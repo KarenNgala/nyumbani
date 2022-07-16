@@ -10,11 +10,12 @@
 <div class="main_content">
     <div class="info">
         <h4>Your Listings</h4>
-        {% for listing in apartments %}
+        <div class="row">
+          {% for listing in apartments %}
         <div class="col-md-4">
             <div class="card border-light">
                 <div class="card-image">
-                    <a href="">
+                    <a href="/manage/rooms/{{listing.id}}">
                       <img src="{{listing.image.url}}" class="card-img-top" alt="">
                     </a>
                 </div>
@@ -23,12 +24,9 @@
                     <div class="row">
                       <div class="col">
                         <h6>{{listing.name}}</h6>
-                        {% for info in listing.room_type.all %}
-                        <h6>{{info.name}}</h6>
-                        {% endfor %}
                       </div>
                       <div class="col text-end">
-                        <a href="" class="text-success"><i class="bi bi-gear-fill"></i> Manage</a>
+                        <a href="/manage/rooms/{{listing.id}}" class="text-success"><i class="bi bi-gear-fill"></i> Manage rooms</a>
                       </div>
                     </div>
                   </div>
@@ -36,6 +34,7 @@
             </div>
         </div>
         {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}
