@@ -1,46 +1,96 @@
 {% extends 'layout.html' %} 
 {% load static %}
 
+{% block head_links %}
+<style>
+    .table-wrapper {
+  height: 320px;
+  border: 1px solid var(--borderColor);
+  overflow: auto;
+}
+
+table {
+  border-spacing: 0;
+}
+
+thead {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+tbody {
+  font-size: 14px;
+}
+
+th, td {
+  padding: 18px 24px;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--borderColor);
+}
+
+tr:last-child td {
+  border: none;
+}
+.pt-3-half {
+  padding-top: 1.4rem;
+}
+
+</style>
+{% endblock %}
+
 <!-- Editable table -->
 {% block content %}
-<div class="card">
-    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Tenants List</h3>
-    <div class="card-body">
-        <div id="table" class="table-editable">
-            <span class="table-add float-right mb-3 mr-2"><a href="" class="text-success"><i
-              class="bi bi-plus-circle" aria-hidden="true"></i></a></span>
-            <table class="table table-bordered table-responsive-md table-striped text-center">
-                <thead>
-                    <tr>
-                        <th class="text-center">Tenant Name</th>
-                        <th class="text-center">Phone Number</th>
-                        <th class="text-center">Apartment</th>
-                        <th class="text-center">Room NO</th>
-                        <th class="text-center">Booking status</th>
-
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for booking in my_bookings %}
-                    <tr>
-                        <td class="text-center pt-3-half">{{booking.tenant.name}}</td>
-                        <td class="text-center pt-3-half">{{tenant.phone_number}}</td>
-                        <td class="text-center pt-3-half">{{booking.room.apartment.name}}</td>
-                        <td class="text-center pt-3-half">{{booking.room.name}}</td>
-                        {% if booking.is_approved == True %}
-                        <td class="text-center pt-3-half"><a class="text-success" href="">Approved</a></td>
-                        {% else %}
-                        <td class="text-center pt-3-half"><a class="text-danger" href="">Pending</a></td>
-                        {% endif %}
-                        <td>
-                            <span class="table-add float-right mb-3 mr-2"><a href="" class="text-success"><i
-                            class="bi bi-pencil" aria-hidden="true"></i></a></span>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <h3 class="card-header text-center font-weight-bold text-uppercase py-4" style="background-color: white">Tenants List</h3>
+            <div class="card-body">
+                <div id="table-wraper" class="table-editable">
+                    <span class="table-add float-right mb-3 mr-2"><a href="" class="text-success"><i
+                      class="bi bi-plus-circle" aria-hidden="true"></i></a></span>
+                    <table class="table table-bordered table-responsive-md table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Tenant Name</th>
+                                <th class="text-center">Phone Number</th>
+                                <th class="text-center">Apartment</th>
+                                <th class="text-center">Room NO</th>
+                                <th class="text-center">Booking status</th>
+                                <th class="text-center">Change Status</th>
+                                <th class="text-center">Vacate Room</th>
+                            </tr>
+                        </thead>
+        
+                        <tbody>
+                            {% for booking in my_bookings %}
+                            <tr>
+                                <td class="text-center pt-3-half">{{booking.tenant.name}}</td>
+                                <td class="text-center pt-3-half">{{booking.tenant.phone_number}}</td>
+                                <td class="text-center pt-3-half">{{booking.room.apartment.name}}</td>
+                                <td class="text-center pt-3-half">{{booking.room.name}}</td>
+                                {% if booking.room.status == 'Paid' %}
+                                <td class="text-center pt-3-half">Paid</td>
+                                {% elif booking.room.status == 'Pending' %}
+                                <td class="text-center pt-3-half">Pending</td>
+                                {% else %}
+                                <td class="text-center pt-3-half">Null</td>
+                                {% endif %}
+                                <td>
+                                    <span class="table-add float-right mb-3 mr-2"><a href="/change_status/{{booking.id}}" class="text-success"><i
+                                    class="bi bi-toggles" aria-hidden="true"></i></a></span>
+                                </td>
+                                <td>
+                                    <span class="table-add float-right mb-3 mr-2"><a href="/vacate_room/{{booking.id}}" class="text-danger"><i
+                                    class="bi bi-box-arrow-right" aria-hidden="true"></i></a></span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

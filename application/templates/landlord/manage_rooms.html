@@ -12,30 +12,47 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <div class="text-center">
-            <h1>Edit Listing</h1>
+            <h1>Add an Available Room</h1>
             <h6>{{listing.name}}</h6>
         </div>
-        <form method="POST" action="/manage/rooms/{{listing.id}}/" class="form-group font-weight-bold" enctype="multipart/form-data">
-            {% csrf_token %} 
-            {% for field in form %}
-            {% if form.non_field_errors %}
-              <div class="form-group text-error">
-                  {{ form.non_field_errors }}
-              </div>
-            {% endif %}
-            <label for="{{ field.auto_id }}"{% if field.field.required %}
-              class="requiredField{% if field.widget.attrs.readonly %} readOnlyLabel{% endif %}"
-              {% else %}{% if field.widget.attrs.readonly %}class="readOnlyLabel"{% endif %}{% endif %}>
-              {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
-            </label>
-            {{field}}
-            {% if field.help_text %}
-            <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %}
-            {{field.errors}} {{form.errors}} {% endfor %}              
-            <div class="mb-2 pt-2">
-              <button id="login" style="background-color: #146356;" type="submit" class="btn btn-primary form-control">Create Room</input>
-            </div>
+        <form role="upload" method="POST" action="{% url 'manage_rooms' %}">
+          <div class="form_group">
+            <label class="form-label" for="name">Room name</label>
+            <input class="form-control" type="text" name="name" id="name" placeholder="Room name">
+          </div>
+          
+          <div class="form_group">
+            <label class="form-label" for="apartment">Apartment</label>
+            <select class="form-control" name="apartment" id="apartment" required>
+              <option selected disabled>Select apartment</option>
+              {% for listing in apartments %}
+                  <option value="{{listing.id}}">{{listing.name}}</option>
+              {% endfor %}      
+            </select>
+          </div>
+
+          <div class="form_group">
+            <label class="form-label" for="room_type">Room Type</label>
+            <select class="form-control" name="room_type" id="room_type" required>
+              <option selected disabled>Select room type</option>
+              {% for type in room_type %}
+                  <option value="{{type.id}}">{{type.name}}-{{type.price}}</option>
+              {% endfor %}      
+            </select>
+          </div>
+
+          <div class="form_group">
+            <label class="form-label" for="status">Room Status</label>
+            <select class="form-control" name="status" id="status" required>
+              <option selected disabled>Select Unit</option>
+              {% for item in status %}
+                  <option value="{{item}}">{{item}}</option>
+              {% endfor %}      
+            </select>
+          </div>
+          
+          {% csrf_token %}
+          <button id="login" style="background-color: #146356;" type="submit" class="btn btn-primary form-control">Create Room</button>                  
         </form>
     </div>
     <div class="col-md-3"></div>

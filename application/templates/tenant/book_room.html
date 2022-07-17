@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 
@@ -9,14 +9,14 @@
 {% block content %}
 <div class="main_content">
     <div class="info row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
         <div class="text-center">
             <h1>Book Room</h1>
-            <h6>{{listing.name}}</h6>
             <p></p>
         </div>
         <form role='change' method="POST" action="/book_room/{{listing.id}}/">
+            <h5>Apartment: {{listing.name}}</h5> <br>
             <div class="form_group">
                 <label class="form-label" for="room">Select a Room</label>
                 <select class="form-control" name="room" id="room" required>
@@ -26,12 +26,14 @@
                   {% endfor %}      
                 </select>
               </div>
-    
+                <br>
+                
               {% csrf_token %}
-              <button type="submit" class="btn btn-primary">Request Room</button>
+              <button id="login" style="background-color: #146356;" type="submit" class="btn btn-primary form-control">Request Room</button>
+              <br> <br> <br> <br> <br>
           </form>
     </div>
-    <div class="col-md-3"></div>
+    <div class="col-md-4"></div>
     </div>
 </div>
 {% endblock %}

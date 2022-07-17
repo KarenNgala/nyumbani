@@ -249,9 +249,13 @@ def landlord_listings(request):
     user = User.objects.get(pk=current_user.id) 
     landlord = Landlord.objects.get(user=user)
     apartments = Apartment.objects.filter(landlord=landlord).all()
+    bookings = Room.objects.filter(status='Paid').all()
+    rooms = Room.objects.all()
     context={
         'landlord':landlord, 
         'apartments':apartments,
+        'bookings':bookings,
+        'rooms':rooms,
     }
     return render(request, 'landlord/my_listings.html', context)
 
@@ -278,26 +282,30 @@ def new_listing(request):
         return render(request, 'landlord/new_listing.html', context)   
 
 
-def manage_rooms(request, listing_id):
+def manage_rooms(request):
     current_user = request.user
     user = User.objects.get(pk=current_user.id) 
     landlord = Landlord.objects.get(user=user)
-    listing = Apartment.objects.get(id=listing_id)
+    apartments = Apartment.objects.filter(landlord=landlord).all()
+    room_type = RoomType.objects.all()
+    status = [c[0] for c in Room.status.field.choices]
+
     if request.method == 'POST':
-        form = ManageRooms(request.POST)
-        if form.is_valid():
-            upload = form.save(commit=False)
-            upload.apartment = listing
-            form.save()
-            return redirect('landlord_home')
-        else:
-            return redirect(reverse('manage_rooms', kwargs={"listing_id": listing_id}))
+        room_name = request.POST.get('name')
+        apartment_id = request.POST.get('apartment')
+        this_apartment = Apartment.objects.get(pk=apartment_id)
+        room_type_id = request.POST.get('room_type')
+        this_room_type = RoomType.objects.get(pk=room_type_id)
+        this_status = request.POST.get('status')
+        upload = Room(name=room_name, apartment=this_apartment, room_type=this_room_type, status=this_status)
+        upload.save()
+        return redirect('landlord_home') 
     else:
-        form = ManageRooms()
         context = {
         'landlord':landlord, 
-        'form':form,
-        'listing':listing
+        'apartments':apartments,
+        'room_type':room_type,
+        'status':status,
         }
         return render(request, 'landlord/manage_rooms.html', context)   
 
@@ -308,6 +316,7 @@ def my_tenants(request):
     landlord = Landlord.objects.get(user=user)
     apartments = Apartment.objects.filter(landlord=landlord).all()
     all_bookings = Booking.objects.all()
+    all_status = [c[0] for c in Room.status.field.choices]
     my_bookings = []
     for booking in all_bookings:
         if booking.room.apartment in apartments:
@@ -316,8 +325,31 @@ def my_tenants(request):
         'landlord':landlord,
         'apartments':apartments,
         'my_bookings':my_bookings,
+        'all_status':all_status,
     }
     return render(request, 'landlord/my_tenants.html', context)
+
+
+@landlord_required
+def delete_tenant(request, booking_id):
+    booking = Booking.objects.filter(pk=booking_id)
+    room = Room.objects.get(id=booking.room.id)
+    room.status = 'Available'
+    room.save()
+    booking.delete()
+    return redirect('my_tenants')
+
+
+@landlord_required
+def confirm_payment(request, booking_id):
+    booking = Booking.objects.get(pk=booking_id)
+    room = Room.objects.get(id=booking.room.id)
+    if room.status == 'Paid':
+        room.status = 'Pending'
+    elif room.status == 'Pending':
+        room.status = 'Paid'
+    room.save()
+    return redirect('my_tenants')
 
 
 @landlord_required

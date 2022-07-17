@@ -1,39 +1,81 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %} 
 {% load static %}
 
-
 {% block head_links %}
+<style>
+    .table-wrapper {
+  height: 320px;
+  border: 1px solid var(--borderColor);
+  overflow: auto;
+}
+
+table {
+  border-spacing: 0;
+}
+
+thead {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+tbody {
+  font-size: 14px;
+}
+
+th, td {
+  padding: 18px 24px;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--borderColor);
+}
+
+tr:last-child td {
+  border: none;
+}
+.pt-3-half {
+  padding-top: 1.4rem;
+}
+
+</style>
 {% endblock %}
 
-
+<!-- Editable table -->
 {% block content %}
-<div class="main_content">
-    <div class="info">
-        <h4>Your Listings</h4>
-        <div class="row">
-          {% for listing in apartments %}
-        <div class="col-md-4">
-            <div class="card border-light">
-                <div class="card-image">
-                    <a href="/manage/rooms/{{listing.id}}">
-                      <img src="{{listing.image.url}}" class="card-img-top" alt="">
-                    </a>
-                </div>
-                <div class="card_content">
-                  <div class="card_caption">
-                    <div class="row">
-                      <div class="col">
-                        <h6>{{listing.name}}</h6>
-                      </div>
-                      <div class="col text-end">
-                        <a href="/manage/rooms/{{listing.id}}" class="text-success"><i class="bi bi-gear-fill"></i> Manage rooms</a>
-                      </div>
-                    </div>
-                  </div>
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <h3 class="card-header text-center font-weight-bold text-uppercase py-4" style="background-color: white">My Apartments</h3>
+            <div class="card-body">
+                <div id="table-wraper" class="table-editable">
+                    <span class="table-add float-right mb-3 mr-2"><a href="" class="text-success"><i
+                      class="bi bi-plus-circle" aria-hidden="true"></i></a></span>
+                    <table class="table table-bordered table-responsive-md table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Apartment Name</th>
+                                <th class="text-center">Vacant Rooms</th>
+                                <th class="text-center">Tenants</th>
+                                <th class="text-center">Delete</th>
+                            </tr>
+                        </thead>
+        
+                        <tbody>
+                            {% for apartment in apartments %}
+                            <tr>
+                                <td class="text-center pt-3-half">{{apartment.name}}</td>
+                                <td class="text-center pt-3-half">{{booking.tenant.phone_number}}</td>
+                                <td class="text-center pt-3-half">{{booking.room.apartment.name}}</td>
+                                <td>
+                                    <span class="table-add float-right mb-3 mr-2"><a href="" class="text-danger"><i
+                                    class="bi bi-trash" aria-hidden="true"></i></a></span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-        {% endfor %}
         </div>
     </div>
 </div>

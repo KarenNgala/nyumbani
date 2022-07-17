@@ -42,6 +42,7 @@
           {% elif booking.room.status == 'Pending' %}
             <p class="price">
             Your booking <span>({{booking.room.apartment.name}} - {{booking.room.name}})</span> is pending payment
+            <br> Amount due: {{booking.room.room_type.price|intcomma}}
             </p>
           {% else %}
           <p class="price">
