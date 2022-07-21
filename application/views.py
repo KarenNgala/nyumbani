@@ -11,14 +11,33 @@ from django.contrib import messages
 from django.urls import reverse
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django_daraja.mpesa.core import MpesaClient
+from django.http import HttpResponse, JsonResponse
+import json
 from .models import *
 from .forms import *
+from django.contrib.auth.decorators import login_required
 
 
+
+@login_required(login_url='/accounts/login/')
 def home(request):
     current_user = request.user
     apartments = Apartment.objects.all()
     rooms = Room.objects.filter(status='Available').all()
+    locations = Location.objects.all()
+    room_types = set()
+    for type in RoomType.objects.all():
+        room_types.add(type.name)
+    if request.method == 'POST' and user is not None:
+        location = request.POST.get('location') and not None
+        room_type = request.POST.get('room_type')
+        price = request.POST.get('price')
+        # apartment_locations = Apartment.objects.filter(location=location).all()
+        # this_room_type = RoomType.objects.filter(pk=room_type, price=price)
+        # this_type_apartments = Room.objects
+
+        return redirect('all_listings')
     if current_user is not None:
         user =  User.objects.get(pk=current_user.id)
         if user.is_tenant:
@@ -26,7 +45,7 @@ def home(request):
             return render(request, 'index.html', {'tenant':tenant, 'apartments':apartments, 'rooms':rooms,})
         elif user.is_landlord:
             landlord = Landlord.objects.get(user = current_user.id)
-            return render(request, 'index.html', {'landlord':landlord, 'apartments':apartments, 'rooms':rooms,})
+            return render(request, 'index.html', {'landlord':landlord, 'apartments':apartments, 'rooms':rooms, 'type':type, 'locations':locations})
         else:
             return render(request, 'index.html', {'apartments':apartments, 'rooms':rooms,})
     return render(request, 'index.html', {'apartments':apartments, 'rooms':rooms,})
@@ -48,7 +67,7 @@ def  info(request):
     return render(request , 'information.html')    
 
 
-def List_apartment(request):
+def all_listings(request):
     apartments = Apartment.objects.all().order_by('-id')
     current_user = request.user
     if current_user is not None:
@@ -64,7 +83,7 @@ def List_apartment(request):
     return render(request,'listings.html' ,{'apartments':apartments})
 
 
-def listing(request, apart_id):
+def single_listing(request, apart_id):
     listing = Apartment.objects.get(id=apart_id)
     current_user = request.user
     rooms = Room.objects.filter(status='Available', apartment=listing).count()
@@ -161,12 +180,52 @@ def tenant_profile(request):
     for booking in my_bookings:
         if booking.end_date > timezone.now():
             current_booking.append(booking)
+
     context = {
         'tenant':tenant,
         'my_bookings':my_bookings,
         'current_booking':current_booking,
         }
     return render(request, 'tenant/profile.html', context)
+
+
+cl = MpesaClient()
+
+def mpesa_stk(request):
+    current_user = request.user
+    user = User.objects.get(id=current_user.id)
+    tenant = Tenant.objects.get(user=user)
+    booking = Booking.objects.get(tenant=tenant)
+    
+    phone_number = tenant.phone_number
+    amount = int(booking.room.room_type.price)
+    account_reference = 'Nyumbani Hostels'
+    transaction_desc = 'Hostel booking'
+    stk_push_callback_url = 'https://darajambili.herokuapp.com/express-payment'
+    callback_url = stk_push_callback_url
+    r = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
+    # return HttpResponse(r)
+    return render(request, 'tenant/payment.html', {'tenant':tenant})
+
+
+# def stk_push_callback(request):
+#     data = request.body
+#     current_user = request.user
+#     user = User.objects.get(id=current_user.id)
+#     tenant = Tenant.objects.get(user=user)
+#     booking = Booking.objects.get(tenant=tenant)
+
+#     if data['ResultCode'] == 0:
+#         booking.payment_status = 'Received'
+#         room = Room.objects.get(pk=booking.room.id)
+#         room.status = 'Paid'
+#         room.save()
+#         booking.save()
+#         return redirect('tenant_profile')
+#     else:
+#         booking.payment_status = 'Not Paid'
+#         booking.save()
+#         return redirect('tenant_profile')
 
 
 @tenant_required
@@ -244,20 +303,38 @@ def landlord_activate(request, user_id):
         return render(request, 'error/failed.html', {'user':user, 'form':form})
 
 
+@landlord_required
 def landlord_listings(request):
     current_user = request.user
     user = User.objects.get(pk=current_user.id) 
     landlord = Landlord.objects.get(user=user)
     apartments = Apartment.objects.filter(landlord=landlord).all()
-    bookings = Room.objects.filter(status='Paid').all()
-    rooms = Room.objects.all()
+    rooms={}
+    tenants={}
+    pending_bookings = {}
+    for apartment in apartments:
+        rooms.update({apartment.id:Room.objects.filter(apartment=apartment).count()})
+
+    for apartment in apartments:
+        tenants.update({apartment.id:Room.objects.filter(status='Paid', apartment=apartment).count()})
+
+    for apartment in apartments:
+        pending_bookings.update({apartment.id:Room.objects.filter(status='Pending', apartment=apartment).count()})
     context={
         'landlord':landlord, 
         'apartments':apartments,
-        'bookings':bookings,
+        'pending_bookings':pending_bookings,
         'rooms':rooms,
+        'tenants':tenants,
     }
     return render(request, 'landlord/my_listings.html', context)
+
+
+@landlord_required
+def delete_listing(request, apart_id):
+    listing = Apartment.objects.filter(pk=apart_id)
+    listing.delete()
+    return redirect('landlord_listings')
 
 
 def new_listing(request):
@@ -369,8 +446,8 @@ def landlord_home(request):
                 tenants = tenants+1
     for booking in bookings:
         if booking.room.apartment in my_apartments and ((timezone.now() - booking.start_date) < timedelta(days=30)):
-            for info in booking.room.apartment.room_type.all():
-                income=income+info.price
+            if booking.room.status == 'Paid':
+                income=income+booking.room.room_type.price
     
     context={
         'tenants':tenants,

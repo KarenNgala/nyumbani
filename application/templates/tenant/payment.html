@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+
+{% block head_links %}
+<style>
+.prompt{
+    color: #58A336;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+.image{
+    height:20%;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3"></div>
+
+    <div class="col-md-6">
+        <img class="image" src="{% static '/images/mpesa.png' %}" alt="" >
+        <h5 class="prompt">Payment Prompt sent!</h5>
+        <p>Proceed with payment. The landlord will upload your payment status.</p>
+    </div>
+
+    <div class="col-md-3"></div>
+  </div>
+{% endblock %}

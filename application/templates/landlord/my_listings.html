@@ -56,7 +56,9 @@ tr:last-child td {
                                 <th class="text-center">Apartment Name</th>
                                 <th class="text-center">Vacant Rooms</th>
                                 <th class="text-center">Tenants</th>
-                                <th class="text-center">Delete</th>
+                                <th class="text-center">Pending Bookings</th>
+                                <th class="text-center">Add Rooms</th>
+                                <th class="text-center">Delete Apartment</th>
                             </tr>
                         </thead>
         
@@ -64,12 +66,34 @@ tr:last-child td {
                             {% for apartment in apartments %}
                             <tr>
                                 <td class="text-center pt-3-half">{{apartment.name}}</td>
-                                <td class="text-center pt-3-half">{{booking.tenant.phone_number}}</td>
-                                <td class="text-center pt-3-half">{{booking.room.apartment.name}}</td>
+
+                                {% for key, value in rooms.items %}
+                                {% if key == apartment.id %}
+                                <td class="text-center pt-3-half">{{value}}</td>
+                                {% endif %}
+                                {% endfor %}
+
+                                {% for key, value in tenants.items %}
+                                {% if key == apartment.id %}
+                                <td class="text-center pt-3-half">{{value}}</td>
+                                {% endif %}
+                                {% endfor %}
+
+                                {% for key, value in pending_bookings.items %}
+                                {% if key == apartment.id %}
+                                <td class="text-center pt-3-half">{{value}}</td>
+                                {% endif %}
+                                {% endfor %}
+
                                 <td>
-                                    <span class="table-add float-right mb-3 mr-2"><a href="" class="text-danger"><i
-                                    class="bi bi-trash" aria-hidden="true"></i></a></span>
+                                    <span class="table-add float-right mb-3 mr-2"><a href="{% url 'manage_rooms' %}" class="text-success"><i
+                                    class="bi bi-plus-circle" aria-hidden="true"></i></a></span>
                                 </td>
+
+                                <td>
+                                  <span class="table-add float-right mb-3 mr-2"><a href="/delete_listing/{{apartment.id}}/" class="text-danger"><i
+                                  class="bi bi-trash" aria-hidden="true"></i></a></span>
+                              </td>
                             </tr>
                             {% endfor %}
                         </tbody>

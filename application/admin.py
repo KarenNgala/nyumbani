@@ -5,6 +5,7 @@ from .models import *
 admin.site.register(User)
 admin.site.register(Tenant)
 admin.site.register(Landlord)
+admin.site.register(Location)
 admin.site.register(Apartment)
 admin.site.register(Room)
 admin.site.register(RoomType)

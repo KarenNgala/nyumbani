@@ -7,9 +7,10 @@ from django.conf.urls.static import static
 
 urlpatterns=[
     re_path(r'^$', views.home, name='index'),
-    re_path(r'^listings/$', views.List_apartment, name='listings'),
+    re_path(r'^mpesa_stk/$', views.mpesa_stk, name='mpesa_stk'),
+    re_path(r'^listings/$', views.all_listings, name='listings'),
     re_path(r'^info/$', views.info, name='info'),
-    re_path(r'^single_listing/(?P<apart_id>[0-9]+)/$', views.listing, name='single_listing'),
+    re_path(r'^single_listing/(?P<apart_id>[0-9]+)/$', views.single_listing, name='single_listing'),
     
 
     #TENANT urls
@@ -23,6 +24,7 @@ urlpatterns=[
     # LANDLORD uls
     re_path(r'^landlord/home/$', views.landlord_home, name='landlord_home'),
     re_path(r'^landlord/listings/$', views.landlord_listings, name='landlord_listings'),
+    re_path(r'^delete_listing/(?P<apart_id>[0-9]+)/$', views.delete_listing, name='delete_listing'),
     re_path(r'^my_tenants/$', views.my_tenants, name='my_tenants'),
     re_path(r'^new/listing/$', views.new_listing, name='new_listing'),
     re_path(r'^manage/rooms/$', views.manage_rooms, name='manage_rooms'),

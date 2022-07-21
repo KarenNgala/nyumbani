@@ -33,12 +33,6 @@
         width: 70%;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
-    .mpesa{
-        background: #58A336;
-        color: white;
-        font-family: 'Roboto', sans-serif;
-        font-weight: 700;
-    }
     .close{
         background-color: #4F4A7D;
         color: white;
@@ -72,7 +66,7 @@
                     {% endfor %}
                 </p>
                 <p>Available rooms: {{rooms}}</p>
-                <div type="button" class="book btn search-btn text-center"> <a href="/book_room/{{listing.id}}/">BOOK NOW</a></div>
+                <div type="button" class="book btn search-btn text-center"> <a class="text-white" href="/book_room/{{listing.id}}/">BOOK NOW</a></div>
             </div>
         </div>
     </div>

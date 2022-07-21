@@ -100,11 +100,19 @@ class RoomType(models.Model):
         return f'{self.name} - {self.price}'
 
 
+class Location(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
 class Apartment(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='apartment_images')
     description = models.TextField(blank=True, null=True)
     landlord = models.ForeignKey(Landlord, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     amenity = models.ManyToManyField(Amenity, related_name='apartment_amenity')
     house_rule = models.ManyToManyField(HouseRule, related_name='apartment_rule')
     

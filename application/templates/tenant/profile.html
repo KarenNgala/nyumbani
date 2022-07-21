@@ -13,6 +13,12 @@
         color: white;
         font-weight: 700;
     }
+    .mpesa{
+        background: #58A336;
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 700;
+    }
     .heading{
         font-family: 'Hind Siliguri';
         font-weight: 700;
@@ -41,15 +47,20 @@
             </p>
           {% elif booking.room.status == 'Pending' %}
             <p class="price">
-            Your booking <span>({{booking.room.apartment.name}} - {{booking.room.name}})</span> is pending payment
+            Your booking for <span>({{booking.room.apartment.name}} - {{booking.room.name}})</span> is pending payment
             <br> Amount due: {{booking.room.room_type.price|intcomma}}
             </p>
+            <a href="{% url 'mpesa_stk' %}">
+              <div type="button" class="mpesa btn search-btn text-center"> LIPA NA MPESA</div>
+            </a>
+          {% elif booking.approve_booking == 'Pending' %}
           {% else %}
           <p class="price">
             You have no bookings yet
           </p>
           {% endif %}
         {% endfor %}
+        <br> <br> <br>
         <a class="text-primary" href="{% url 'listings' %}">Find a new apartment?</a>
         <br> <br> <br> <br> <br> <br>
     </div>
