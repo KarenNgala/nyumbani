@@ -8,9 +8,11 @@ from django.conf.urls.static import static
 urlpatterns=[
     re_path(r'^$', views.home, name='index'),
     re_path(r'^mpesa_stk/$', views.mpesa_stk, name='mpesa_stk'),
+    re_path(r'^stk_push_callback/$', views.stk_push_callback, name='stk_push_callback'),
     re_path(r'^listings/$', views.all_listings, name='listings'),
     re_path(r'^info/$', views.info, name='info'),
     re_path(r'^single_listing/(?P<apart_id>[0-9]+)/$', views.single_listing, name='single_listing'),
+    re_path(r'^search_results/$', views.search, name='search_results'),
     
 
     #TENANT urls

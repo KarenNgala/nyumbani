@@ -6,7 +6,7 @@
 {% block head_links %}
 <style>
 .prompt{
-    color: #58A336;
+    color: red;
     font-family: 'Roboto', sans-serif;
     font-weight: 700;
 }
@@ -23,10 +23,8 @@
 
     <div class="col-md-6">
         <img class="image" src="{% static '/images/mpesa.png' %}" alt="" >
-        <h5 class="prompt">Payment Prompt sent!</h5>
-        <p>Enter your Mpesa Pin. Once you have completed payment, click here to view your Booking status</p>
-
-        <a href="{% url 'tenant_profile' %}">Check Booking Status</a>
+        <h5 class="prompt">Ooops!</h5>
+        <p>Mpesa could not make payment. Try again later!</p>
     </div>
 
     <div class="col-md-3"></div>

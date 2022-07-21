@@ -17,6 +17,7 @@ import json
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -27,17 +28,8 @@ def home(request):
     rooms = Room.objects.filter(status='Available').all()
     locations = Location.objects.all()
     room_types = set()
-    for type in RoomType.objects.all():
-        room_types.add(type.name)
-    if request.method == 'POST' and user is not None:
-        location = request.POST.get('location') and not None
-        room_type = request.POST.get('room_type')
-        price = request.POST.get('price')
-        # apartment_locations = Apartment.objects.filter(location=location).all()
-        # this_room_type = RoomType.objects.filter(pk=room_type, price=price)
-        # this_type_apartments = Room.objects
-
-        return redirect('all_listings')
+    for this_type in RoomType.objects.all():
+        room_types.add(this_type.name)
     if current_user is not None:
         user =  User.objects.get(pk=current_user.id)
         if user.is_tenant:
@@ -45,11 +37,29 @@ def home(request):
             return render(request, 'index.html', {'tenant':tenant, 'apartments':apartments, 'rooms':rooms,})
         elif user.is_landlord:
             landlord = Landlord.objects.get(user = current_user.id)
-            return render(request, 'index.html', {'landlord':landlord, 'apartments':apartments, 'rooms':rooms, 'type':type, 'locations':locations})
+            return render(request, 'index.html', {'landlord':landlord, 'apartments':apartments, 'rooms':rooms, 'room_types':room_types, 'locations':locations})
         else:
             return render(request, 'index.html', {'apartments':apartments, 'rooms':rooms,})
     return render(request, 'index.html', {'apartments':apartments, 'rooms':rooms,})
 
+
+def search(request):
+    current_user = request.user
+    if request.method == 'POST' and current_user is not None:
+        location = request.POST.get('location') and not None
+        room_type = request.POST.get('room_type')
+        price = request.POST.get('price')
+        apartment_locations = Apartment.objects.filter(location=location).all()
+        this_room_type = RoomType.objects.filter(pk=room_type, price=price)
+        results = []
+        for apartment in apartment_locations:
+            for r_type in this_room_type:
+                requested_rooms = Room.objects.filter(room_type=r_type, apartment=apartment)
+                results.append(requested_rooms.apartment)
+        context={
+            'results':results
+        }
+        return render(request, 'search_results.html', context)
 
 
 def  info(request):
@@ -204,28 +214,32 @@ def mpesa_stk(request):
     stk_push_callback_url = 'https://darajambili.herokuapp.com/express-payment'
     callback_url = stk_push_callback_url
     r = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
-    # return HttpResponse(r)
-    return render(request, 'tenant/payment.html', {'tenant':tenant})
+    if (r.response_description == 'Success. Request accepted for processing'):
+        return render(request, 'tenant/payment.html', {'tenant':tenant})
+    else:
+        return render(request, 'error/payment_failed.html', {'tenant':tenant})
 
 
-# def stk_push_callback(request):
-#     data = request.body
-#     current_user = request.user
-#     user = User.objects.get(id=current_user.id)
-#     tenant = Tenant.objects.get(user=user)
-#     booking = Booking.objects.get(tenant=tenant)
-
-#     if data['ResultCode'] == 0:
-#         booking.payment_status = 'Received'
-#         room = Room.objects.get(pk=booking.room.id)
-#         room.status = 'Paid'
-#         room.save()
-#         booking.save()
-#         return redirect('tenant_profile')
-#     else:
-#         booking.payment_status = 'Not Paid'
-#         booking.save()
-#         return redirect('tenant_profile')
+@csrf_exempt
+def stk_push_callback(request):
+    data = json.loads(request.body)
+    if data['Body']['stkCallback']['ResultCode'] == 0:
+        phone_number = '0'
+        receipt = ''
+        metadata_items = data['Body']['stkCallback']['CallbackMetadata']['Item']
+        for item in metadata_items:
+            if item['Name'] == 'PhoneNumber':
+                phone_number += str(item['Value'])[3:]
+            elif item['Name'] == 'MpesaReceiptNumber':
+                receipt = item['Value']
+        tenant = Tenant.objects.get(phone_number=phone_number)
+        booking = Booking.objects.get(tenant=tenant)
+        booking.mpesa_receipt = receipt
+        booking.save()
+        room = Room.objects.get(pk=booking.room.id)
+        room.status = 'Paid'
+        room.save()
+    return JsonResponse({"ResultCode": 0,"ResultDesc": "Accepted"})
 
 
 @tenant_required

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_links %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+.heading{
+    font-family: 'Hind Siliguri';
+    font-weight: 700;
+    font-size: 30px !important;
+    line-height: 16px;
+    color: #146356;
+    letter-spacing: 0.4px;
+  }
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+} 
+.card_caption {
+    text-transform: capitalize;
+    background: #fff;
+    padding: 15px 5px;
+    margin-right: auto;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+  <div class="row hidden-md-up mt-3">
+    <h4 class="heading text-center">Search Results</h4>
+      {% for listing in results %}
+      <div class="col-md-4 mt-3">
+        <div class="card border-light">
+            <div class="card-image">
+                <a href="/single_listing/{{listing.id}}">
+                  <img src="{{listing.image.url}}" class="card-img-top" alt="">
+                </a>
+            </div>
+            <div class="card_content">
+              <div class="card_caption">
+                <div class="row">
+                  <div class="col">
+                    <h6>
+                        <a href="/single_listing/{{listing.id}}">{{listing.name}}</a>
+                    </h6>
+                    {% for info in listing.room_type.all %}
+                    <h6>{{info.name}}</h6>
+                    {% endfor %}
+                  </div>
+                  <div class="col text-end">
+                      <h6 class="text-success">rooms available</h6>
+                      <!-- <h6>No rooms available</h6> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

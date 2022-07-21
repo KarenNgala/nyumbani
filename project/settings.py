@@ -196,45 +196,42 @@ AUTHENTICATION_BACKENDS = (
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 
-CSRF_TRUSTED_ORIGINS = ['https://1427-154-79-248-18.in.ngrok.io/']
-
-
 # The Mpesa environment to use
 # Possible values: sandbox, production
 
-MPESA_ENVIRONMENT = 'sandbox'
+MPESA_ENVIRONMENT = config('MPESA_ENVIRONMENT')
 
 # Credentials for the daraja app
 
-MPESA_CONSUMER_KEY = 'QHGstT0o6kqx5EHs1SpNy0fSg4EK8Uxj'
-MPESA_CONSUMER_SECRET = '2GyNAqJX9G3qT2lr'
+MPESA_CONSUMER_KEY = config('MPESA_CONSUMER_KEY')
+MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET')
 
 #Shortcode to use for transactions. For sandbox  use the Shortcode 1 provided on test credentials page
 
-MPESA_SHORTCODE = '600977'
+MPESA_SHORTCODE = config('MPESA_SHORTCODE')
 
 # Shortcode to use for Lipa na MPESA Online (MPESA Express) transactions
 # This is only used on sandbox, do not set this variable in production
 # For sandbox use the Lipa na MPESA Online Shorcode provided on test credentials page
 
-MPESA_EXPRESS_SHORTCODE = '174379'
+MPESA_EXPRESS_SHORTCODE = config('MPESA_EXPRESS_SHORTCODE')
 
 # Type of shortcode
 # Possible values:
 # - paybill (For Paybill)
 # - till_number (For Buy Goods Till Number)
 
-MPESA_SHORTCODE_TYPE = 'CustomerPayBillOnline'
+MPESA_SHORTCODE_TYPE = config('MPESA_SHORTCODE_TYPE')
 
 # Lipa na MPESA Online passkey
 # Sandbox passkey is available on test credentials page
 # Production passkey is sent via email once you go live
 
-MPESA_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
+MPESA_PASSKEY = config('MPESA_PASSKEY')
 
 # Username for initiator (to be used in B2C, B2B, AccountBalance and TransactionStatusQuery Transactions)
 
-MPESA_INITIATOR_USERNAME = 'Nyumbani Hostels'
+MPESA_INITIATOR_USERNAME = config('MPESA_INITIATOR_USERNAME')
 
 # Plaintext password for initiator (to be used in B2C, B2B, AccountBalance and TransactionStatusQuery Transactions)
 
