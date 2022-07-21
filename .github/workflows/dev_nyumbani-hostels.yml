@@ -10,6 +10,9 @@ on:
       - dev
   workflow_dispatch:
 
+env:
+  MODE: dev
+
 jobs:
   build:
     runs-on: ubuntu-latest
