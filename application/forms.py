@@ -47,12 +47,13 @@ class NewApartment(forms.ModelForm):
     name =  forms.CharField()
     image =  forms.ImageField()
     description =  forms.CharField()
+    location = forms.ModelChoiceField(queryset=Location.objects.all())
     amenity = forms.ModelMultipleChoiceField(queryset=Amenity.objects.all(),widget=forms.CheckboxSelectMultiple)
     house_rules = forms.ModelMultipleChoiceField(queryset=HouseRule.objects.all(),widget=forms.CheckboxSelectMultiple)
 
     class Meta:
         model = Apartment
-        fields = ["name", "description", "image", "amenity", "house_rules"]
+        fields = ["name", "description", "image", "location", "amenity", "house_rules"]
 
     def __init__(self, *args, **kwargs):
         super(NewApartment, self).__init__(*args, **kwargs)

@@ -362,15 +362,14 @@ def new_listing(request):
             upload.landlord = landlord
             form.save()
             return redirect('landlord_listings')
-        else:
-            return redirect('new_listing')
     else:
         form = NewApartment()
-        context = {
+    
+    context = {
         'landlord':landlord, 
         'form':form
-        }
-        return render(request, 'landlord/new_listing.html', context)   
+    }
+    return render(request, 'landlord/new_listing.html', context)   
 
 
 def manage_rooms(request):
